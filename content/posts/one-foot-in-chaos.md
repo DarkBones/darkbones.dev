@@ -11,6 +11,7 @@ description = "A journey through the phases of learning and growth in software e
 showFullContent = false
 readingTime = true
 hideComments = true
+draft = true
 +++
 **Maybe it's because I'm self-taught, or because I didn't start coding professionally until eight years into my 13-year journey. Perhaps it's pure passion—or even a touch of masochism. Whatever the reason, I embrace a little chaos of the unknown in my life.**
 

@@ -1,4 +1,4 @@
-baseURL = 'https://darkbones.dev/'
+baseURL = 'https://darkbones.github.io/'
 languageCode = 'en-us'
 title = 'DarkBones'
 theme = 'terminal'

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>DarkBones</title>
-    <link>http://localhost:1313/darkbones.dev/</link>
-    <description>Recent content on DarkBones</description>
+    <title>Burnout on DarkBones</title>
+    <link>http://localhost:1313/darkbones.dev/tags/burnout/</link>
+    <description>Recent content in Burnout on DarkBones</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 25 Jan 2025 07:05:51 +0100</lastBuildDate><atom:link href="http://localhost:1313/darkbones.dev/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 25 Jan 2025 07:05:51 +0100</lastBuildDate><atom:link href="http://localhost:1313/darkbones.dev/tags/burnout/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>One Foot in Chaos</title>
       <link>http://localhost:1313/darkbones.dev/posts/one-foot-in-chaos/</link>
@@ -92,7 +92,7 @@
 &lt;h2 id=&#34;the-takeaways&#34;&gt;The Takeaways&lt;/h2&gt;
 &lt;p&gt;One of the greatest perks of being a knowledge worker is that our job lets us constantly learn cool new things. If you&amp;rsquo;re an engineer—or any kind of knowledge worker—you&amp;rsquo;ve already traveled the journey from knowing nothing to where you are now. Maybe you&amp;rsquo;re content to coast until retirement, and that&amp;rsquo;s perfectly fine. But for me, coasting leads to boredom, and boredom leads to burnout.&lt;/p&gt;
 &lt;p&gt;As knowledge workers, knowledge is value, and we share that value freely and willingly. When I submit a PR that I poured my heart into—only to have a colleague suggest an obviously better strategy that sends me back to square one—I&amp;rsquo;m thankful every single time. I now know one more thing and that&amp;rsquo;s valuable.&lt;/p&gt;
-&lt;p&gt;Even though some might see me as some kind of wizard (my monitor seems to flicker with code, windows pop in and out of existence until I miraculously raise a PR while my hands never left the keyboard), I still get overwhelmed when I look at the giant, ever-growing list of things I still want to learn. And that, in itself, makes me happy.&lt;/p&gt;
+&lt;p&gt;Even though some might see me as a wizard (my monitor seems to flicker with code until I miraculously raise a PR while my hands never leave the keyboard), I still get overwhelmed when I look at the giant, ever-growing list of things I still want to learn. And that, in itself, makes me happy.&lt;/p&gt;
 </content>
     </item>
     

@@ -1,5 +1,5 @@
 +++
-title = "One Foot in Chaos"
+title = "One Foot in the Unknown"
 date = "2025-01-25T07:05:51+01:00"
 #dateFormat = "2006-01-02" # This value can be configured for per-post date formatting
 author = "DarkBones"
@@ -13,7 +13,7 @@ readingTime = true
 hideComments = true
 draft = true
 +++
-**Maybe it's because I'm self-taught, or because I didn't start coding professionally until eight years into my 13-year journey. Perhaps it's pure passion—or even a touch of masochism. Whatever the reason, I embrace a little chaos of the unknown in my life.**
+**Maybe it's because I'm self-taught and didn't start coding professionally until eight years into my now 13-year journey and I never truly got over feeling like I'm "not good enough yet to get paid for writing code". Perhaps it's pure passion—or even a touch of masochism. Whatever the reason, I embrace a little chaos in my life.**
 
 **No matter how you got here—whether with a CS degree, learning everything on YouTube, attending a bootcamp, or, like me, tinkering on personal projects as if your life depended on it—we all start at the same place: Knowing. Absolutely. Nothing.**
 
@@ -29,13 +29,13 @@ At first, you learn to do something very basic—like writing a program that pri
 
 Then, sooner or later, you get an opportunity to put that simple skill to work. Maybe it's a task from your boss, a class assignment, or a requirement in your personal project: printing a line of text to a console. When you get to do that task, your heart leaps with joy. You create a new branch, implement the solution, push it to the repo, and suddenly, everyone can see that little victory. In that moment, you feel like a real engineer.
 
-I remember feeling like I was on top of the world—at the summit of mount stupid—after learning about `if` statements. I thought, "Programming is just about writing a bunch of `if` statements to decide whether to do x or y."
+I remember feeling like I was on top of the world—at the summit of mount stupid—after learning about `if` statements. I thought, "Programming is just about writing a bunch of `if` statements to decide whether to do `x` or `y`."
 
 But, alas, not every task is as simple as printing a line of text or toggling between `x` and `y`.
 
 ## Phase 2: The Perceived Valley of Despair
 
-Eventually, we all take that inevitable slide down into the valley of despair.
+Eventually, all who reach the summit of mount stupid must take that inevitable slide down into the valley of despair.
 
 As you tackle more tasks and get better at suppressing the thoughts of giving up, you also discover more layers to the craft. You become partly capable of handling your job or project, yet with every new concept mastered, five more emerge that you **previously** didn't know existed. Upon realizing each of those five things come with their own five things you **currently** don't know the existence of, the thoughts of quitting might grow a little stronger.
 
@@ -65,7 +65,7 @@ Great, our sales department has an exciting lead for a big Swiss customer! Wait,
 
 Even though you no longer see yourself as being in a "learning phase," knowledge continues to accumulate through adversity. You’ve moved from "knowing enough to handle your daily tasks" to knowing way more than that.
 
-> I'm STILL required to learn things? This is BS! I should be cruising, adding years of experience, salary bumps, and fancy titles!
+> I'm **still** required to learn things? This is BS! I should be cruising, adding years of experience, salary bumps, and fancy titles!
 
 That creeping sense of peace eventually turns to dread. Did I lose my passion for tech? Did I trade disassociating at my desk in a call center for disassociating at my desk in a tech firm? Is this really what I worked so dang hard for? What am I going to do for the next 30 years of my life? Is it CRUD operations forever?
 
@@ -73,9 +73,9 @@ That creeping sense of peace eventually turns to dread. Did I lose my passion fo
 
 While mentoring a small team of junior developers, I began to envy how much they were still learning. I found myself wishing I could go back to that exhilarating “Phase 2”—when you’re in the zone, challenged enough to notice improvement from one week to the next.
 
-I thought, if mentoring juniors is the final destination, I might as well get really good at it. So I turned to YouTube for inspiration and ended up watching tech influencers like ThePrimeagen, tjdevries, and typecraft. They’re still burning with passion for programming. Where does that spark come from?
+I thought, if mentoring juniors is the final destination, I might as well get really good at it. So I turned to YouTube for inspiration and ended up finding tech influencers like ThePrimeagen, tjdevries, and typecraft. They’re still burning with passion for programming. Where does that spark come from?
 
-I saw them using tools like Neovim and Arch Linux (I now also use Arch Linux, by the way), advocating for proper typing, and relentlessly learning new things. And that’s when it hit me—I could be just like those junior engineers. I could start today.
+I saw them using tools like Neovim and Arch Linux (I now also use Arch Linux, by the way), advocating for proper typing, and relentlessly learning new things. And that’s when it hit me—I could be just like those junior engineers. And I could start today.
 
 ## Phase 2: The Perceived Valley of Despair. Again.
 
@@ -85,9 +85,12 @@ You do not know all the things. Nobody in tech knows everything—it’s impossi
 
 If you're bored with the comfort of familiarity, all you have to do to get back into Phase 2 is move your feet.
 
+But what can you do when you're tired of adding yet another set of CRUD endpoints to an API?
+
 ### Treat It Like A Video Game
 
-What do you do when you're tired of adding yet another CRUD model to the application? Try one or more of these:
+What do you do when you get bored of a video game but can't find something else to play? Try one or more of these:
+
 - **Speedrun it.**
 - **Use a different editor.**
 - **Install mods (a.k.a. Neovim plugins).**
@@ -96,6 +99,8 @@ What do you do when you're tired of adding yet another CRUD model to the applica
 - **Rewrite it in Rust.**
 - **Do it branchless without a single `if` statement.** (Phase 1 me would have cried at the thought.)
 - **Become infrastructure guy™.**
+
+It also helps to be mindful about tiny frustrations that come up from time to time. Typing a long command in your terminal and realize you made a typo at the very start? You can either hold the left arrow key for five minutes or look up how to get to a specific part of a command more efficiently in the same amount of time.
 
 ### Do Something Else Entirely
 
@@ -114,13 +119,13 @@ Are you a frontend engineer? Try backend. A backend engineer? Experiment with fr
 
 It's okay to fail at half of these things. It's okay to only attempt a few. The only way to lose is by becoming too comfortable for too long.
 
-### Is it just learning forever?
+### *"Is it just learning forever?"*
 
 Yes.
 
-### What if I get tired of learning?
+### *"What if I get tired of learning?"*
 
-If you get tired of having one foot in the known and the other in the unknown, be kind to yourself. Take a little break. A little vacation, if you will. It's okay. Everyone needs a break sometimes and you deserve it. Put BOTH feet in chaos. Go back to Phase 0. Switch to DVORAK, install Arch, fire up Emacs and do last year's Advent of Code in Rust with it after putting ChatGPT in the blocklist of your pi-hole. Embrace the suck. Do that before considering taking a vacation in the place of boredom.
+If you get tired of having one foot in the known and the other in the unknown, be kind to yourself. Take a little break. A little vacation, if you will. It's okay. Everyone needs a break sometimes and you deserve it. Put **both** feet in the unknown. Go back to Phase 0. Switch to DVORAK, install Arch on your MacBook, fire up Emacs and do last year's Advent of Code in Rust with it after putting ChatGPT in the blocklist of your pi-hole. Embrace the suck. See how fast you can get to Phase 2 again with that setup. Do that before considering taking a vacation in the place of boredom.
 
 ## The Takeaways
 

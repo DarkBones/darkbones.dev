@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on DarkBones</title>
+    <link>https://darkbones.dev/posts/</link>
+    <description>Recent content in Posts on DarkBones</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 01 Feb 2025 07:21:39 +0100</lastBuildDate><atom:link href="https://darkbones.dev/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hello World</title>
+      <link>https://darkbones.dev/posts/hello-world/</link>
+      <pubDate>Sat, 01 Feb 2025 07:21:39 +0100</pubDate>
+      
+      <guid>https://darkbones.dev/posts/hello-world/</guid>
+      <description>&lt;h1 id=&#34;hello-world&#34;&gt;Hello World!&lt;/h1&gt;
+&lt;p&gt;test &lt;strong&gt;test&lt;/strong&gt; 1, 2, 3&amp;hellip;&lt;/p&gt;</description>
+      <content>&lt;h1 id=&#34;hello-world&#34;&gt;Hello World!&lt;/h1&gt;
+&lt;p&gt;test &lt;strong&gt;test&lt;/strong&gt; 1, 2, 3&amp;hellip;&lt;/p&gt;
+</content>
+    </item>
+    
+  </channel>
+</rss>

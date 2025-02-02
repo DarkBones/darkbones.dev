@@ -11,7 +11,7 @@ description = "A journey through the phases of learning and growth in software e
 showFullContent = false
 readingTime = true
 hideComments = true
-draft = true
+draft = false
 +++
 **Maybe it's because I'm self-taught and didn't start coding professionally until eight years into my now 13-year journey and I never truly got over feeling like I'm "not good enough yet to get paid for writing code". Perhaps it's pure passion—or even a touch of masochism. Whatever the reason, I embrace a little chaos in my life.**
 
@@ -19,11 +19,15 @@ draft = true
 
 ## Phase 0: Knowing Nothing
 
+![I Understand Nothing](i_understand_nothing.png)
+
 This phase is as uncomfortable as it is frustrating. One moment, you're on the verge of giving up; the next, you're desperately waiting for that breakthrough when everything finally clicks. Sometimes, you even experience both at once.
 
 The good news is that you don't have to stay in that place forever. The better news is that you can.
 
-## Phase 1: Knowing **Something**
+## Phase 1: Knowing "Something"
+
+![Knowing Something](patrick_building.jpg)
 
 At first, you learn to do something very basic—like writing a program that prints "Hello World!" to a console. It's a small win, but it's your first taste of what coding can do.
 
@@ -34,6 +38,8 @@ I remember feeling like I was on top of the world—at the summit of mount stupi
 But, alas, not every task is as simple as printing a line of text or toggling between `x` and `y`.
 
 ## Phase 2: The Perceived Valley of Despair
+
+![The Valley of Dispair](valley_of_dispair.png)
 
 Eventually, all who reach the summit of mount stupid must take that inevitable slide down into the valley of despair.
 
@@ -49,6 +55,8 @@ It might seem similar to Phase 1, but don't be fooled. This is a whole different
 
 ## Phase 3: Knowing Almost All The Things
 
+![Bateman Walking](bateman.gif)
+
 While you’re busy nurturing the foot that’s still in chaos, you might not notice that the area of the familiar is quietly expanding beneath the other. And before you know it, you’re firmly planted in comfort. Welcome to being: "A pretty good engineer". You might feel a sense of pride—after all, new tasks no longer fill you with dread because you believe you can handle almost anything the job throws at you.
 
 Sure, you’ll still occasionally be stumped by something new or confusing. But hey, who isn’t?
@@ -58,6 +66,8 @@ I thought infrastructure was just messy and confusing. Fortunately, we had an in
 A sense of peace—one you never realized you never wanted—begins to settle in.
 
 ## Phase 4: Knowing More Than You Need
+
+![Knowing Things](knowing_things.jpg)
 
 Of course, production goes down on the same day that infrastructure guy™ starts his 4-week PTO. "Okay, no need to panic," you tell yourself. "What did he say during standup the other day? Something about a Kubernetes cluster? I'll take a look."
 
@@ -71,19 +81,23 @@ That creeping sense of peace eventually turns to dread. Did I lose my passion fo
 
 ## Deceived by Comfort
 
+![Tech Is Big](tech_is_big.png)
+
 While mentoring a small team of junior developers, I began to envy how much they were still learning. I found myself wishing I could go back to that exhilarating “Phase 2”—when you’re in the zone, challenged enough to notice improvement from one week to the next.
 
-I thought, if mentoring juniors is the final destination, I might as well get really good at it. So I turned to YouTube for inspiration and ended up finding tech influencers like ThePrimeagen, tjdevries, and typecraft. They’re still burning with passion for programming. Where does that spark come from?
+I thought, if mentoring juniors is the final destination, I might as well get really good at it. So I turned to YouTube for inspiration and ended up finding tech influencers like [ThePrimeagen](https://www.youtube.com/@ThePrimeTimeagen), [tjdevries](https://www.youtube.com/@teej_dv), and [typecraft](https://www.youtube.com/@typecraft_dev). They’re still burning with passion for programming. Where does that spark come from?
 
-I saw them using tools like Neovim and Arch Linux (I now also use Arch Linux, by the way), advocating for proper typing, and relentlessly learning new things. And that’s when it hit me—I could be just like those junior engineers. And I could start today.
+I saw them using tools like Neovim and Arch Linux (I now also use Arch Linux, by the way), advocating for proper typing, and relentlessly learning new things. And that’s when it hit me—I could be just like those junior engineers. And I could *start today*.
 
 ## Phase 2: The Perceived Valley of Despair. Again.
+
+![More Dispair](more_dispair.png)
 
 Even when you think you’ve escaped the perpetual learning cycle, sometimes life pulls you right back into that familiar valley of questioning.
 
 You do not know all the things. Nobody in tech knows everything—it’s impossible to know it all. That's not a bug; it's a feature.
 
-If you're bored with the comfort of familiarity, all you have to do to get back into Phase 2 is move your feet.
+If you're bored with the comfort of familiarity, all you have to do to get back into Phase 2 is *move your feet*.
 
 But what can you do when you're tired of adding yet another set of CRUD endpoints to an API?
 
@@ -127,6 +141,8 @@ Yes.
 
 If you get tired of having one foot in the known and the other in the unknown, be kind to yourself. Take a little break. A little vacation, if you will. It's okay. Everyone needs a break sometimes and you deserve it. Put **both** feet in the unknown. Go back to Phase 0. Switch to DVORAK, install Arch on your MacBook, fire up Emacs and do last year's Advent of Code in Rust with it after putting ChatGPT in the blocklist of your pi-hole. Embrace the suck. See how fast you can get to Phase 2 again with that setup. Do that before considering taking a vacation in the place of boredom.
 
+![Pure Unfiltered Suffering](pure_unfiltered_suffering.gif)
+
 ## The Takeaways
 
 One of the greatest perks of being a knowledge worker is that our job lets us constantly learn cool new things. If you're an engineer—or any kind of knowledge worker—you've already traveled the journey from knowing nothing to where you are now. Maybe you're content to coast until retirement, and that's perfectly fine. But for me, coasting leads to boredom, and boredom leads to burnout.
@@ -134,3 +150,5 @@ One of the greatest perks of being a knowledge worker is that our job lets us co
 As knowledge workers, knowledge is value, and we share that value freely and willingly. When I submit a PR that I poured my heart into—only to have a colleague suggest an obviously better strategy that sends me back to square one—I'm thankful every single time. I now know one more thing and that's valuable.
 
 Even though some might see me as some kind of wizard (my monitor seems to flicker with code, windows pop in and out of existence until I miraculously raise a PR while my hands never left the keyboard), I still get overwhelmed when I look at the giant, ever-growing list of things I still want to learn. And that, in itself, makes me happy.
+
+![Happy Not Knowing](happy.png)

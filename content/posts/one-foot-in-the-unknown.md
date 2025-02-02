@@ -11,7 +11,6 @@ description = "A journey through the phases of learning and growth in software e
 showFullContent = false
 readingTime = true
 hideComments = true
-draft = false
 +++
 **Maybe it's because I'm self-taught and didn't start coding professionally until eight years into my now 13-year journey and I never truly got over feeling like I'm "not good enough yet to get paid for writing code". Perhaps it's pure passion—or even a touch of masochism. Whatever the reason, I embrace a little chaos in my life.**
 

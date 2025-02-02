@@ -1,4 +1,4 @@
 baseURL = 'https://darkbones.github.io/darkbones.dev/'
 languageCode = 'en-us'
 title = 'DarkBones'
-theme = 'terminal'
+theme = 'hello-friend-ng'

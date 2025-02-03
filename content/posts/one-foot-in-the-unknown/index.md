@@ -123,6 +123,7 @@ Are you a frontend engineer? Try backend. A backend engineer? Experiment with fr
 - Learn to type faster.
 - Build an embedded system.
 - Learn Assembly.
+- Start giving tech talks at work.
 - Find out what BTRFS is and how it works.
 - Experiment with writing a graphics shader.
 - Build an AI using nothing but LSTM, feed it Christmas songs in LilyPond format, and play the generated tunes at your Christmas dinner party to the annoyance of your guests.

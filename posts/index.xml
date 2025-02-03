@@ -58,7 +58,7 @@
 <li><strong>Do it branchless without a single <code>if</code> statement.</strong> (Phase 1 me would have cried at the thought.)</li>
 <li><strong>Become infrastructure guy™.</strong></li>
 </ul>
-<p>It also helps to be mindful about tiny frustrations that come up from time to time. Typing a long command in your terminal and realize you made a typo at the very start? You can either hold the left arrow key for five minutes or look up how to get to a specific part of a command more efficiently in the same amount of time.</p>
+<p>It also helps to be mindful about tiny frustrations that come up from time to time. Typing a long command in your terminal and realize you made a typo at the very start? You can either hold the left arrow key for five minutes or learn how to get to a specific part of a command more efficiently in the same amount of time.</p>
 <h3 id="do-something-else-entirely">Do Something Else Entirely</h3>
 <p>Are you a frontend engineer? Try backend. A backend engineer? Experiment with frontend. Full-stack? Build a video game. A game engineer? Create a text editor. For that matter, consider:</p>
 <ul>
@@ -72,7 +72,6 @@
 <li>Build an AI using nothing but LSTM, feed it Christmas songs in LilyPond format, and play the generated tunes at your Christmas dinner party to the annoyance of your guests.</li>
 <li>Contribute to open source projects.</li>
 <li>Participate in a data science competition at CERN with LHC data (I got surprisingly far).</li>
-<li>Build your own text editor.</li>
 <li>Automate your house—make it track how many Chocolate Peanut Butter Oreos you have in the cupboard so you never run out again.</li>
 </ul>
 <p>It&rsquo;s okay to fail at half of these things. It&rsquo;s okay to only attempt a few. The only way to lose is by becoming too comfortable for too long.</p>

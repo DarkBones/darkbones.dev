@@ -150,6 +150,8 @@ One of the greatest perks of being a knowledge worker is that our job lets us co
 
 As knowledge workers, knowledge is value, and we share that value freely and willingly. When I submit a PR that I poured my heart into—only to have a colleague suggest an obviously better strategy that sends me back to square one—I'm thankful every single time. I now know one more thing and that's valuable.
 
+The goal isn’t to know everything—it’s to enjoy not knowing and keep learning anyway.
+
 Even though some might see me as some kind of wizard (my monitor seems to flicker with code, windows pop in and out of existence until I miraculously raise a PR while my hands never left the keyboard), I still get overwhelmed when I look at the giant, ever-growing list of things I still want to learn. And that, in itself, makes me happy.
 
 ![Happy Not Knowing](happy.png)

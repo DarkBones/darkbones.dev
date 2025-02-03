@@ -112,7 +112,7 @@ What do you do when you get bored of a video game but can't find something else 
 - **Do it branchless without a single `if` statement.** (Phase 1 me would have cried at the thought.)
 - **Become infrastructure guy™.**
 
-It also helps to be mindful about tiny frustrations that come up from time to time. Typing a long command in your terminal and realize you made a typo at the very start? You can either hold the left arrow key for five minutes or look up how to get to a specific part of a command more efficiently in the same amount of time.
+It also helps to be mindful about tiny frustrations that come up from time to time. Typing a long command in your terminal and realize you made a typo at the very start? You can either hold the left arrow key for five minutes or learn how to get to a specific part of a command more efficiently in the same amount of time.
 
 ### Do Something Else Entirely
 
@@ -127,7 +127,6 @@ Are you a frontend engineer? Try backend. A backend engineer? Experiment with fr
 - Build an AI using nothing but LSTM, feed it Christmas songs in LilyPond format, and play the generated tunes at your Christmas dinner party to the annoyance of your guests.
 - Contribute to open source projects.
 - Participate in a data science competition at CERN with LHC data (I got surprisingly far).
-- Build your own text editor.
 - Automate your house—make it track how many Chocolate Peanut Butter Oreos you have in the cupboard so you never run out again.
 
 It's okay to fail at half of these things. It's okay to only attempt a few. The only way to lose is by becoming too comfortable for too long.

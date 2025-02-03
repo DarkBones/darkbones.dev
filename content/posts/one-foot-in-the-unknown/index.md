@@ -31,7 +31,7 @@ The good news is that you don't have to stay in that place forever. The better n
 
 At first, you learn to do something very basic—like writing a program that prints "Hello World!" to a console. It's a small win, but it's your first taste of what coding can do.
 
-Then, sooner or later, you get an opportunity to put that simple skill to work. Maybe it's a task from your boss, a class assignment, or a requirement in your personal project: printing a line of text to a console. When you get to do that task, your heart leaps with joy. You create a new branch, implement the solution, push it to the repo, and suddenly, everyone can see that little victory. In that moment, you feel like a real engineer.
+Then, sooner or later, you get an opportunity to put that simple skill to work. Maybe it's a task from your boss, a class assignment, or a requirement in your personal project: printing a line of text to a console. When you get to do that task, your heart leaps with joy. You create a new branch, implement the solution, push it to the repo, and suddenly, everyone can see that little victory and you only turned to Google twice. In that moment, you feel like a real engineer.
 
 I remember feeling like I was on top of the world—at the summit of mount stupid—after learning about `if` statements. I thought, "Programming is just about writing a bunch of `if` statements to decide whether to do `x` or `y`."
 
@@ -61,7 +61,7 @@ While you’re busy nurturing the foot that’s still in chaos, you might not no
 
 Sure, you’ll still occasionally be stumped by something new or confusing. But hey, who isn’t?
 
-I thought infrastructure was just messy and confusing. Fortunately, we had an infrastructure guy at work, so I never had to worry about setting up Helm charts or poking around in AWS. That's what infrastructure guy™ is for!
+> Infrastructure is just messy and confusing. Fortunately, we have an infrastructure guy on the team so I never have to worry about setting up Helm charts or poking around in AWS. That's what infrastructure guy™ is for!
 
 A sense of peace—one you never realized you never wanted—begins to settle in.
 
@@ -83,7 +83,7 @@ That creeping sense of peace eventually turns to dread. Did I lose my passion fo
 
 ![Tech Is Big](tech_is_big.png)
 
-While mentoring a small team of junior developers, I began to envy how much they were still learning. I found myself wishing I could go back to that exhilarating “Phase 2”—when you’re in the zone, challenged enough to notice improvement from one week to the next.
+Years ago, while mentoring a small team of junior developers, I began to envy how much they were still learning. I found myself wishing I could go back to that exhilarating “Phase 2”—when you’re in the zone, challenged enough to notice improvement from one week to the next.
 
 I thought, if mentoring juniors is the final destination, I might as well get really good at it. So I turned to YouTube for inspiration and ended up finding tech influencers like [ThePrimeagen](https://www.youtube.com/@ThePrimeTimeagen), [tjdevries](https://www.youtube.com/@teej_dv), and [typecraft](https://www.youtube.com/@typecraft_dev). They’re still burning with passion for programming. Where does that spark come from?
 
@@ -92,8 +92,6 @@ I saw them using tools like Neovim and Arch Linux (I now also use Arch Linux, by
 ## Phase 2: The Perceived Valley of Despair. Again.
 
 ![More Dispair](more_dispair.png)
-
-Even when you think you’ve escaped the perpetual learning cycle, sometimes life pulls you right back into that familiar valley of questioning.
 
 You do not know all the things. Nobody in tech knows everything—it’s impossible to know it all. That's not a bug; it's a feature.
 

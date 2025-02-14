@@ -77,7 +77,7 @@ Even though you no longer see yourself as being in a "learning phase," knowledge
 
 > I'm **still** required to learn things? This is BS! I should be cruising, adding years of experience, salary bumps, and fancy titles!
 
-That creeping sense of peace eventually turns to dread. Did I lose my passion for tech? Did I trade disassociating at my desk in a call center for disassociating at my desk in a tech firm? Is this really what I worked so dang hard for? What am I going to do for the next 30 years of my life? Is it CRUD operations forever?
+That creeping sense of peace eventually turns to dread. Did I lose my passion for tech? Did I trade dissociating at my desk in a call center for dissociating at my desk in a tech firm? Is this really what I worked so dang hard for? What am I going to do for the next 30 years of my life? Is it CRUD operations forever?
 
 ## Deceived by Comfort
 

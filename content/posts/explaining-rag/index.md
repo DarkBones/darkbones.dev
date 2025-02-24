@@ -102,7 +102,7 @@ Take the word *"bat"*.
 One thing I find particularly fascinating with Word2Vec is that, since words are now represented by numbers, you can actually do arithmetic on them.
 
 You can make equations like 
-`kind - man + woman = queen`
+`king - man + woman = queen`
 
 It's wild, but it works (most of the time).
 

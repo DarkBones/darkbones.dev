@@ -13,6 +13,7 @@ readingTime = true
 hideComments = true
 draft = true
 +++
+<!-- TODO -->
 [brief executive summary about rag]
 
 ## RAG 
@@ -71,7 +72,7 @@ If you're here just for the bigger picture, congratulations. Now you have it. If
 
 ## What is a Vector?
 
-In the simplest terms, a vector is a set of coordinates that tell you how to move from A to B. Look at this graph.
+In the simplest terms, a vector is a set of coordinates that tell you how to move from *A* to *B*. Look at this graph:
 
 ![Look at this Graph](5-look-at-this-graph.jpg)
 
@@ -127,9 +128,11 @@ In short, the cosine similarity refers to the angle between two vectors. The sma
 
 ![Cosine Similarity](8-cosine-similarity.png)
 
+From our example, *A* and *B* would be *"RAG stands for Retrieval Augmented Generation"* and *"Hey LLM, tell me about RAG"* respectively, and they would be similar. If we ask about *"Describe an Eclipse"* instead, the vectors are far apart and deemed unrelated. Though, if *"RAG stands for Retrieval Augmented Generation"* is the only thing in the database, the database returns it, no matter how irrelevant.
+
 ## Limitations of RAG
 
-Typically, we don't store and retrieve entire documents in our vector database. If we did, we'd fill up the entire context window of the LLM just with a large document. If we configured our system to return the 10 most relevant pieces of information, and they're all articles of this size, your computer quickly turns into a space heater. This is why we split up the information into chunks of some configured size (E.g. `1000` characters).
+Typically, we don't store and retrieve entire documents in our vector database. If we did, we'd fill up the entire context window of the LLM if the document is sufficiently large. If we configured our system to return the 10 most relevant pieces of information, and they're all articles of this size, your computer quickly turns into a space heater. This is why we split up the information into chunks of some configured size (E.g. `1000` characters).
 
 But splitting information into chunks introduces a new problem. Just like Word2Vec can't figure out the context from a single word, RAG often can't figure out the context from a single chunk, especially if that chunk comes from somewhere in the middle of a document.
 

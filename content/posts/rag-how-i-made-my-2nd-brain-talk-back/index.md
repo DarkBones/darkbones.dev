@@ -14,6 +14,7 @@ draft = true
 +++
 
 <!-- TODO: Fix link -->
+<!-- TODO: Make clearer that darkrag is designed to work with markdown, but it can easily be extended for other formats if desired -->
 **If you're just here for the setup, you can **[skip to the tutorial](#setting-it-all-up)**. If you're not familiar with RAG, you might want to check out **[my previous article](path/to/previous/article)** first.  
 
 Retrieval-Augmented Generation (RAG) is great—until it isn’t. While it helps LLMs pull in external knowledge, it comes with its own headaches. If you've ever had a RAG system return irrelevant information, mash together unrelated concepts, or confidently misinterpret first-person writing, you've run into these issues.  

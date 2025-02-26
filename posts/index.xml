@@ -370,7 +370,7 @@ docker run --rm \
 <p><em>In this article, we will explore how RAG works, why it is useful, and how it differs from traditional LLM prompting. Expect oversimplified analogies, light technical deep dives, and a few poorly drawn diagrams to tie everything together.</em></p>
 <h2 id="rag">RAG</h2>
 <p>Large Language Models excel at many tasks. They can code, draft emails, hallucinate ingredients for the perfect sandwich, and even write articles, although I still prefer doing that myself. However, they have a major limitation. They lack real-time knowledge. Because training LLMs is a time-consuming process, they do not &ldquo;know&rdquo; about recent events. If you ask one about last week, it will either display a disclaimer, provide an outdated answer, or generate something completely inaccurate.</p>
-<p>Some LLMs overcome this limitation by retrieving real-time data from external sources before responding. This approach, known as <em>Retrieval-Augmented Generationl (RAG)</em>, allows the model to fetch relevant information and incorporate it into the prompt before generating an answer.</p>
+<p>Some LLMs overcome this limitation by retrieving real-time data from external sources before responding. This approach, known as <em>Retrieval-Augmented Generation (RAG)</em>, allows the model to fetch relevant information and incorporate it into the prompt before generating an answer.</p>
 <h2 id="rag---oversimplified">RAG - Oversimplified</h2>
 <p>But how does RAG actually work? Instead of looking it up ourselves, let’s ask our favorite LLM:
 <img src="1-rag-is-a-piece-of-cloth.png" alt="Rag is a piece of cloth"></p>

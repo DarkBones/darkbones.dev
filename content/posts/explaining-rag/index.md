@@ -21,7 +21,7 @@ draft = false
 
 Large Language Models excel at many tasks. They can code, draft emails, hallucinate ingredients for the perfect sandwich, and even write articles, although I still prefer doing that myself. However, they have a major limitation. They lack real-time knowledge. Because training LLMs is a time-consuming process, they do not "know" about recent events. If you ask one about last week, it will either display a disclaimer, provide an outdated answer, or generate something completely inaccurate.
 
-Some LLMs overcome this limitation by retrieving real-time data from external sources before responding. This approach, known as *Retrieval-Augmented Generationl (RAG)*, allows the model to fetch relevant information and incorporate it into the prompt before generating an answer.
+Some LLMs overcome this limitation by retrieving real-time data from external sources before responding. This approach, known as *Retrieval-Augmented Generation (RAG)*, allows the model to fetch relevant information and incorporate it into the prompt before generating an answer.
 
 ## RAG - Oversimplified
 

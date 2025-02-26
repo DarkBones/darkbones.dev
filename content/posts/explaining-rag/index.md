@@ -13,8 +13,9 @@ readingTime = true
 hideComments = true
 draft = true
 +++
-<!-- TODO -->
-[brief executive summary about rag]
+*Retrieval-Augmented Generation (RAG) is a technique that helps Large Language Models (LLMs) retrieve relevant information from external sources before generating a response. Since LLMs are trained on static datasets and don’t automatically update with new information, RAG allows them to pull in fresh, domain-specific, or private knowledge without requiring expensive retraining.*
+
+*In this article, we'll break down how RAG works, why it’s useful, and what makes it different from traditional LLM prompting. Expect oversimplified analogies, some light technical deep dives, and a few poorly drawn diagrams to bring it all together.*
 
 ## RAG 
 
@@ -141,3 +142,9 @@ But splitting information into chunks introduces a new problem. Just like Word2V
 Here's a problem I ran into recently. I keep a detailed work diary where I list out all my professional achievements. It's super handy during performance review season. But when I ask my RAG system what I achieved at my current company, it will confidently include things I achieved at my previous company and the one before. And, because I write this diary in first person, and I also have information from other sources, not written by me, also in the first person, it has no clue what to do with words like "I" and "me", so it starts telling me about all the cool stuff I did away from the computer (that's how I could tell those weren't my achievements, I don't leave my computer).
 
 **Want to know how I fixed this mess?** In [the next article], I walk you through how I made my RAG system **context-aware**. You can even steal my code and set it up on your own computer with a couple of commands.
+
+## Wrapping Up  
+
+RAG makes LLMs more useful by letting them retrieve information they wouldn’t otherwise have access to. But it’s not magic. It comes with its own challenges, from handling context properly to avoiding irrelevant results.  
+
+And as I found out the hard way, just because an AI can fetch information doesn’t mean it always understands it. In the next article, I’ll show you how I made my RAG system **context-aware**—so it actually knows what it’s talking about.

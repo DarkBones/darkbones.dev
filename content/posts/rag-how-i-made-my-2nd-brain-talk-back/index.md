@@ -13,12 +13,18 @@ hideComments = true
 draft = true
 +++
 
-<!-- TODO -->
-[link to previous article explaining rag]
+<!-- TODO: Fix link -->
+**If you're just here for the setup, you can **[skip to the tutorial](#setting-it-all-up)**. If you're not familiar with RAG, you might want to check out **[my previous article](path/to/previous/article)** first.  
+
+Retrieval-Augmented Generation (RAG) is great—until it isn’t. While it helps LLMs pull in external knowledge, it comes with its own headaches. If you've ever had a RAG system return irrelevant information, mash together unrelated concepts, or confidently misinterpret first-person writing, you've run into these issues.  
+
+In this article, I’ll walk you through two major problems I encountered while building my own RAG system: **context blindness** (where retrieved chunks lack enough information to be useful) and **first-person confusion** (where the system doesn’t know who “I” refers to). More importantly, I’ll show you how I fixed them—so your RAG system actually understands what it’s retrieving.  
+
+By the end, you’ll have everything you need to **set up your own 100% local, 100% free, context-aware RAG system**, complete with LLMs, a vector database, and automation to tie it all together.
 
 ## RAG Problem #1: Context Blindness
 
-To illustrate the problems with RAG, let's say my vector database holds detailed plots of my favorite movieseries. Let's pick two series that couldn't be further from each other: *The Matrix* and *The Lord of the Rings*. For illustration purposes, let's use a small chunk size and no overlap.
+To illustrate the problems with RAG, let's say my vector database holds detailed plots of my favorite movieseries. Let's pick two series that couldn't be further from each other: *The Matrix* and *The Lord of the Rings*. For illustration purposes, let's say we're using a small chunk size and no overlap.
 
 We have blindly split our movie plots into chunks and stored them in our vector database, along with their embeddings. We're even clever about it and split it up into sentences instead of `x` characters.
 

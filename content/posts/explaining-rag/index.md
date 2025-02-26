@@ -11,7 +11,7 @@ description = "A beginner-friendly breakdown of Retrieval-Augmented Generation (
 showFullContent = false
 readingTime = true
 hideComments = true
-draft = true
+draft = false
 +++
 *Retrieval-Augmented Generation (RAG) enhances Large Language Models (LLMs) by enabling them to retrieve relevant information from external sources before generating a response. Because LLMs rely on static training data and do not update automatically, RAG provides a way to integrate fresh, domain-specific, or private knowledge without requiring costly retraining.*
 

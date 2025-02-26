@@ -5,55 +5,55 @@ date = "2025-02-23T12:34:51+01:00"
 author = "DarkBones"
 authorTwitter = "" #do not include @
 cover = ""
-tags = []
-keywords = []
-description = ""
+tags = ["AI", "machine learning", "LLMs", "retrieval", "RAG"]
+keywords = ["Retrieval-Augmented Generation", "RAG", "LLM prompting", "vector databases", "AI knowledge retrieval"]
+description = "A beginner-friendly breakdown of Retrieval-Augmented Generation (RAG), how it works, and why it makes LLMs more powerful."
 showFullContent = false
 readingTime = true
 hideComments = true
 draft = true
 +++
-*Retrieval-Augmented Generation (RAG) is a technique that helps Large Language Models (LLMs) retrieve relevant information from external sources before generating a response. Since LLMs are trained on static datasets and don’t automatically update with new information, RAG allows them to pull in fresh, domain-specific, or private knowledge without requiring expensive retraining.*
+*Retrieval-Augmented Generation (RAG) enhances Large Language Models (LLMs) by enabling them to retrieve relevant information from external sources before generating a response. Because LLMs rely on static training data and do not update automatically, RAG provides a way to integrate fresh, domain-specific, or private knowledge without requiring costly retraining.*
 
-*In this article, we'll break down how RAG works, why it’s useful, and what makes it different from traditional LLM prompting. Expect oversimplified analogies, some light technical deep dives, and a few poorly drawn diagrams to bring it all together.*
+*In this article, we will explore how RAG works, why it is useful, and how it differs from traditional LLM prompting. Expect oversimplified analogies, light technical deep dives, and a few poorly drawn diagrams to tie everything together.*
 
 ## RAG 
 
-Large Language Models are great for many things. They can code, write emails, hallucinate ingredients for the perfect sandwich, and even write articles (though I still prefer doing that myself). But for some things, they just don't work. Because LLMs take a long time to train, they don't "know" about recent events. If you ask an LLM about what happened last week, it will either tell you it can't, tell you what happened the week before its training started, or just make stuff up.
+Large Language Models excel at many tasks. They can code, draft emails, hallucinate ingredients for the perfect sandwich, and even write articles, although I still prefer doing that myself. However, they have a major limitation. They lack real-time knowledge. Because training LLMs is a time-consuming process, they do not "know" about recent events. If you ask one about last week, it will either display a disclaimer, provide an outdated answer, or generate something completely inaccurate.
 
-Some LLMs get around this by pulling in real-time data from external sources before generating a response. This approach is called RAG, short for **Retrieval-Augmented Generation**, where the model retrieves relevant information and augments your prompt before answering.
+Some LLMs overcome this limitation by retrieving real-time data from external sources before responding. This approach, known as *Retrieval-Augmented Generationl (RAG)*, allows the model to fetch relevant information and incorporate it into the prompt before generating an answer.
 
 ## RAG - Oversimplified
 
-But how does RAG work under the hood? Instead of researching on our own, let's ask our favorite LLM:
+But how does RAG actually work? Instead of looking it up ourselves, let’s ask our favorite LLM:
 ![Rag is a piece of cloth](1-rag-is-a-piece-of-cloth.png)
 
-Okay, so clearly this model doesn't know what Retrieval-Augmented Generation is. That's fine, we can ask our friend Bob:
+This is not quite what we were hoping for. No problem, we can ask Bob instead.
 ![Asking Bob](2-bob-rag.png)
 
-Interesting, Bob also didn't know the answer but was able to retrieve it. Let's break down what happened:
-1. We asked Bob to tell us about RAG.
-2. Bob went to the library and asked the librarian for information about RAG.
-3. The librarian told Bob where he can find it.
-4. Bob retrieves the information as per the instructions of the librarian.
-5. Now Bob sounds like he knew it all along. Thanks, Bob.
+Surprisingly, Bob did not know the answer either, but he was able to retrieve it. Here is what happened:
+1. We asked Bob about RAG.
+2. Bob went to the library and asked the librarian for information.
+3. The librarian pointed him to the right aisle.
+4. Bob retrieved the information.
+5. Now Bob sounds like an expert. Thanks, Bob.
 
 This breakdown reveals that Bob is effectively functioning as a RAG agent. With that insight, let’s explore exactly how a RAG agent operates.
 
 ## RAG - Simplified
 
 Let's transform our interaction with Bob into an actual RAG system:
-- Bob becomes the **RAG system**.
-- The librarian becomes an **embedder**.
-- The library becomes a **vector database**.
+- Bob represents the **RAG system**.
+- The librarian acts as an **embedder**.
+- The library functions as a **vector database**.
 
 ![Rag System](4-rag-system.png)
 
-Instead of the user prompting the LLM directly, they prompt the *RAG system* instead. The *RAG system* goes to the *embedder*, and repeats the user's prompt. The *embedder* returns the user's prompt in the form of a *vector*. This *vector* is a numeric representation of the prompt. The idea is that data that shares similarities with the prompt will share similarities in their vector representations.
+Instead of prompting the LLM directly, the user interacts with the *RAG system*. The *RAG system* then forwards the prompt to the *embedder*, which converts it into a *vector*. This *vector* is a numeric representation of the prompt. The idea is that information with similar meaning will have similar vector representations.
 
-We can use this vector to find relevant data in the vector database. When we give the vector of the user's prompt to the database, it returns the most "similar" (relevant) data.
+This vector allows the system to find relevant information in the vector database. When the vector representation of the user's prompt is sent to the database, it retrieves the most relevant matches.
 
-The RAG system then simply "augments" the user's prompt with this relevant information like so:
+The *RAG system* then enhances the user's prompt by including the retrieved information:
 ```
 <context>
 the information returned from the database
@@ -63,35 +63,35 @@ the user's original prompt
 </user-prompt>
 ```
 
-That's it in a nutshell. Retrieve, Augment, and Generate. **RAG**.
+That is the entire process. Retrieve, Augment, and Generate. **RAG**.
 
-But of course we cannot retrieve data from a database if that data doesn't exist. So how do we add it? It's very straight-forward, actually. We start out with the same process, but instead of using the vector to find relevant information, we store the information along with its vector representation.
+However, the system cannot retrieve information that has not been added to the database. How do we store new data? The process is straightforward. Instead of using the vector to find relevant information, the system stores the data along with its vector representation.
 
 ![Insert Knowledge](3-rag-injest.png)
 
-If you're here just for the bigger picture, congratulations. Now you have it. If you're a fellow neckbeard, let's talk a bit more about vectors and embedders.
+If you were only interested in the big picture, congratulations. You now understand the core concept. However, if you're a fellow neckbeard, let's talk a bit more about vectors and embedders.
 
 ## What is a Vector?
 
-In the simplest terms, a vector is a set of coordinates that tell you how to move from *A* to *B*. Look at this graph:
+In simple terms, a vector is a set of coordinates that describe how to move from A to B. Look at this graph:
 
 ![Look at this Graph](5-look-at-this-graph.jpg)
 
-This graph has two dimensions. This means that each point; **A**, **B**, **C**, and **D** can be described using a *two-digit* coordinate system. The first of the two digits tell us how far from the origin (`0`) to move to the right, and the second digit tells us how far to move up. To get to **A**, our vector is `[3, 7]`, and to get to **D**, our vector is `[3, 0]`.
+This graph has two dimensions. Each point, **A**, **B**, **C**, and **D**, can be described using a two-number coordinate system. The first number tells us how far to move to the right from the origin (0), while the second number tells us how far to move up. To reach **A**, the vector is `[3, 7]`. To reach **D**, the vector is `[3, 0]`.
 
-This principle holds up just as well in 3 dimensions. In order to get from your desk to your coffee machine for a refill, you have to go from your current location a certain distance in the `x`, `y`, and `z` axes, making it a *three-digit* coordinate system.
+The same principle applies in three dimensions. To move from your desk to the coffee machine, you must travel a certain distance along the `x`, `y`, and `z` axes, forming a three-number coordinate system.
 
 ![3 Dimensions](6-3d-vector.png)
 
-We can't really think about or understand beyond 3 dimensions, but computers don't have this limitation. The math works just the same way. 4 dimensions? No problem, we'll use a *four-digit* coordinate system. 100 dimensions? *100-digit* coordinate system.
+Humans struggle to visualize more than three dimensions, but computers do not have this limitation. The math remains the same. Four dimensions? That requires a *four-number* coordinate system. One hundred dimensions? That requires a *100-number* coordinate system.
 
 ![This is Fine](this-is-fine.png)
 
-The embedder I use works with a coordinate system that has 768 digits. When you're done trying to visualize what 768-dimensional space looks like, let's go back to our lovely, easy-to-draw, 2d graphs.
+The embedder I use operates in a coordinate system with 768 dimensions. When you have finished trying to visualize that, we can return to simpler, easy-to-draw, two-dimensional graphs.
 
 ### Why Are Vectors Useful?
 
-By themselves, vectors are just n-dimensional coordinates that point to a point in n-dimensional space. But what makes them useful is the things they point to. You probably don't think about GPS coordinates on a daily basis. But as long as you're on earth, your exact position can be described with these coordinates.
+Vectors by themselves are simply n-dimensional coordinates that represent points in n-dimensional space. Their usefulness comes from the information they represent.
 
 In the same way, vectors are coordinates not to places, but to information. A specialized LLM, an *embedder*, is trained on a large corpus of text to figure out similarities and to place these pieces of information somewhere in n-dimensional space such that similar topics tend to be grouped together. Like, when you go to a social event, you're likely to stick with your friends, colleagues, or at least a group of like-minded people.
 
@@ -99,7 +99,7 @@ In the same way, vectors are coordinates not to places, but to information. A sp
 
 This graph shows how words that are similar in meaning tend to get grouped together in this n-dimensional space. Modern embedders (like **BERT**) don't use single-word embeddings anymore, but generate *contextual embeddings*.
 
-This clustering of similar concepts in vector space is what makes embeddings so powerful. But early embedding models, like **Word2Vec**, had a major blindspot that modern models have worked hard to fix.
+The ability to group similar concepts in vector space makes embeddings powerful. However, early embedding models like *Word2Vec* had a significant limitation that modern models have addressed.
 
 #### Quick Tech Tangent
 
@@ -123,27 +123,29 @@ It's wild, but it works (most of the time).
 
 ### How are Vectors Used?
 
-Now that we know what vectors are, taking the next leap is relatively simple. In essence, we embed information we want the LLM to know about, and when we ask a question about that information, our very question should be close to the information when it's embedded. The vector database returns the `n` number of most-related pieces of content it has, `n` being some configured number. Along with the `n` pieces of content, it also returns its *cosine similarity* with your prompt.
+Now that we understand vectors, the next step is straightforward. We embed the information we want the LLM to access, and when we ask a question about that information, the question itself should be close to the relevant content in vector space. The vector database retrieves the `n` most relevant pieces of content, where `n` is a configurable number. It also returns the *cosine similarity* score for each result, indicating how closely the retrieved content matches the query.
 
-In short, the cosine similarity refers to the angle between two vectors. The smaller this angle, the more relevant the data is to your prompt.
+Cosine similarity measures the angle between two vectors. A smaller angle indicates greater similarity, meaning the retrieved data is more relevant to the prompt.  
 
 ![Cosine Similarity](8-cosine-similarity.png)
 
-From our example, *A* and *B* would be *"RAG stands for Retrieval Augmented Generation"* and *"Hey LLM, tell me about RAG"* respectively, and they would be similar. If we ask about *"Describe an Eclipse"* instead, the vectors are far apart and deemed unrelated. Though, if *"RAG stands for Retrieval Augmented Generation"* is the only thing in the database, the database returns it, no matter how irrelevant.
+In our example, *A* and *B* represent the phrases *"RAG stands for Retrieval Augmented Generation"* and *"Hey LLM, tell me about RAG"*. Since they are closely related, their vectors are similar. If we instead ask *"Describe an Eclipse"*, its vector will be far from the others, making it unrelated. However, if *"RAG stands for Retrieval Augmented Generation"* is the only entry in the database, it will still be retrieved, even if it is not relevant to the query.  
 
 ## Limitations of RAG
 
-Typically, we don't store and retrieve entire documents in our vector database. If we did, we'd fill up the entire context window of the LLM if the document is sufficiently large. If we configured our system to return the 10 most relevant pieces of information, and they're all articles of this size, your computer quickly turns into a space heater. This is why we split up the information into chunks of some configured size (E.g. `1000` characters).
+Typically, we do not store and retrieve entire documents in the vector database. If we did, a single large document could easily exceed the context window of the LLM. If the system is configured to return the ten most relevant pieces of information, and each of them is the size of a full article, your computer quickly turns into a space heater. To prevent this, we split the information into chunks of a predefined size, such as `1000` characters, and we try to keep the sentences and paragraphs intact.
 
-But splitting information into chunks introduces a new problem. Just like Word2Vec can't figure out the context from a single word, RAG often can't figure out the context from a single chunk, especially if that chunk comes from somewhere in the middle of a document.
+However, splitting information into chunks introduces a new problem. Just as *Word2Vec* struggles to determine meaning from a single word, RAG often fails to understand the full context of a single chunk, especially when that chunk is extracted from the middle of a document.  
 
 ![Rag-time](9-over-rag.png)
 
-Here's a problem I ran into recently. I keep a detailed work diary where I list out all my professional achievements. It's super handy during performance review season. But when I ask my RAG system what I achieved at my current company, it will confidently include things I achieved at my previous company and the one before. And, because I write this diary in first person, and I also have information from other sources, not written by me, also in the first person, it has no clue what to do with words like "I" and "me", so it starts telling me about all the cool stuff I did away from the computer (that's how I could tell those weren't my achievements, I don't leave my computer).
+Here is a problem I encountered recently. I keep a detailed work diary where I document all my professional achievements. It is extremely useful during performance reviews. However, when I ask my RAG system what I achieved at my current company, it confidently includes accomplishments from my previous jobs. Because I write this diary in the first person and also include information from other sources written in the first person, the system cannot distinguish between them. As a result, it starts attributing achievements to me that I had nothing to do with. That is how I realized something was wrong. My system was suddenly telling me about all the interesting things I supposedly did away from the computer, which is impossible since I never leave my desk.  
 
 **Want to know how I fixed this mess?** In [the next article], I walk you through how I made my RAG system **context-aware**. You can even steal my code and set it up on your own computer with a couple of commands.
 
-## Wrapping Up  
+As I learned firsthand, retrieving information *does not guarantee understanding*. In [my next article]({{< relref "rag-but-i-made-it-smarter/index.md" >}}), I demonstrate how I made my RAG system **context-aware** so that it can truly comprehend the context of the data it retrieves.
+
+## Conclusion
 
 RAG makes LLMs more useful by letting them retrieve information they wouldn’t otherwise have access to. But it’s not magic. It comes with its own challenges, from handling context properly to avoiding irrelevant results.  
 

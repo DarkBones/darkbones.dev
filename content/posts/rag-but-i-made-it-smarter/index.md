@@ -1,21 +1,18 @@
 +++
-title = "RAG – How I Made My 2nd Brain Talk Back"
+title = "RAG, But I Made it Smarter"
 date = "2025-02-25T16:55:55+01:00"
 author = "DarkBones"
 authorTwitter = "" #do not include @
 cover = ""
-tags = []
-keywords = []
-description = ""
+tags = ["AI", "machine learning", "LLMs", "retrieval", "self-hosting", "RAG"]
+keywords = ["Retrieval-Augmented Generation", "RAG", "local AI", "vector databases", "context-aware AI"]
+description = "A deep dive into the problems of RAG, how I made my own system context-aware, and a step-by-step guide to setting it up locally."
 showFullContent = false
 readingTime = true
 hideComments = true
 draft = true
 +++
-
-<!-- TODO: Fix link -->
-<!-- TODO: Make clearer that darkrag is designed to work with markdown, but it can easily be extended for other formats if desired -->
-**If you're just here for the setup, you can **[skip to the tutorial](#setting-it-all-up)**. If you're not familiar with RAG, you might want to check out **[my previous article](path/to/previous/article)** first.  
+**If you're just here for the setup, you can [skip to the tutorial](#setting-it-all-up). If you're not familiar with RAG, you might want to check out [my previous article]({{< relref "explaining-rag/index.md" >}}) first.**
 
 Retrieval-Augmented Generation (RAG) is great—until it isn’t. While it helps LLMs pull in external knowledge, it comes with its own headaches. If you've ever had a RAG system return irrelevant information, mash together unrelated concepts, or confidently misinterpret first-person writing, you've run into these issues.  
 
@@ -25,9 +22,9 @@ By the end, you’ll have everything you need to **set up your own 100% local, 1
 
 ## RAG Problem #1: Context Blindness
 
-To illustrate the problems with RAG, let's say my vector database holds detailed plots of my favorite movieseries. Let's pick two series that couldn't be further from each other: *The Matrix* and *The Lord of the Rings*. For illustration purposes, let's say we're using a small chunk size and no overlap.
+To illustrate the problems with RAG, let's say my vector database holds detailed plots of my favorite movie series. Let's pick two series that couldn't be further from each other: *The Matrix* and *The Lord of the Rings*. For illustration purposes, let's say we're using a small chunk size and no overlap.
 
-We have blindly split our movie plots into chunks and stored them in our vector database, along with their embeddings. We're even clever about it and split it up into sentences instead of `x` characters.
+We have blindly split our movie plots into chunks and stored them in our vector database, along with their embeddings. We even take a smart approach by splitting it into full sentences rather than arbitrarily splitting at a fixed number of characters.
 
 Now watch what might happen if you query the vector database with a question, and what it might return.
 
@@ -71,15 +68,15 @@ If you give this information to an LLM and use it as context, it might end up an
 
 **What happened here?**
 
-*Garbage in, garbage out.* The vector database isn't designed to be smart. It's designed to take an input vector, sort its own vectors by most-similar, and return the top `x` items. It doesn't know what either of the movies are. In our second prompt, we even specifically ask about The Matrix. But if you've never seen the Matrix and don't know about the movie, how are you supposed to know which of these chunks belongs to which movie? The first chunk correctly answers the question, as there's literally an *Oracle* in the matrix, so that is the most similar chunk. But an oracle, by concept, offers wisdom and foresight. So, considering what little context the vector database has to work with, it's not *that* wrong to the conclude that Galadriel is also similar.
+*Garbage in, garbage out.* The vector database isn't designed to be smart. It's designed to take an input vector, sort its own vectors by most-similar, and return the top `x` items. It doesn't know what either of the movies are. In our second prompt, we even specifically ask about The Matrix. But if you've never seen the Matrix and don't know the story, how are you supposed to know which of these chunks belongs to which movie? The first chunk correctly answers the question, as there's literally an *Oracle* in the matrix, so that is the most similar chunk. But an oracle, by concept, offers wisdom and foresight. So, considering what little context the vector database has to work with, it's not *that* wrong to conclude that Galadriel is also similar.
 
 ## RAG Problem #2: First Person Perspective Confusion
 
 I write a lot in the first person. I write articles, technical documentation, tech talk preparations, emails, and I keep a professional diary with things I'm working on and achievements that I accomplished.
 
-But also, I save a lot of content from other people who write in the first person. Articles I find interesting but don't have the time to read (yet), documentation of tools and applications that I'd like to be able to refer to. Neatly organized into directories and sub-directories they may be, but they all go into the same knowledge base, my 2nd brain.
+But I also store content written by other people in the first person—articles I find interesting but haven’t read yet, documentation for tools I reference, and other resources. They may be neatly organized into directories and sub-directories, but in the end, they all go into the same knowledge base.
 
-But given the chunks *"I designed a robust data anomaly detection system."* and *"I climbed Mount Fuji in the least amount of steps."*, how is it supposed to know which one of those belongs to me (obviously it's the former, but a vector db doesn't know that).
+But given the chunks *"I designed a robust data anomaly detection system."* and *"I climbed Mount Fuji in the least amount of steps."*, how is it supposed to know which one belongs to me? Obviously, it's the former, but a vector database has no way of knowing that.
 
 ## Solving Context Blindness by Making Chunks “Context Aware”
 
@@ -113,7 +110,7 @@ Even if you've never heard of The Matrix or The Oracle, this makes it clear how 
 
 *But how do we get these summaries and headers?*
 
-We ask an LLM to summarize the entire file by providing the first and last few chunks-since intros and conclusions usually carry the strongest contextual clues. Then, using this file summary as a guide, we have the LLM create a chunk-specific summary, ensuring the chunk is tied back to the broader topic. And finally, we extract the markdown headers and include the chunk's content. We put all the pieces together and store it in a separate database field called *full_context*.
+We ask an LLM to summarize the entire file by providing the first and last few chunks, since intros and conclusions usually carry the strongest contextual clues. Then, using this file summary as a guide, we have the LLM create a chunk-specific summary, ensuring the chunk is tied back to the broader topic. And finally, we extract the markdown headers and include the chunk's content. We put all the pieces together and store it in a separate database field called *full_context*.
 
 - **This *full_context* field is what we vectorize and embed.**
 - **The original chunk content (augmented by the headers) is what the database returns**
@@ -130,7 +127,7 @@ This simple addition of context isn’t just useful for decoding movie plots. In
 
 ## Solving the First Person Confusion
 
-This one is quite simple, and a little bit hacky. I have a directory in my knowledge base with my first name. If the chunk processor is processing any file in this directory or any of its sub-directories, I add an additional prompt instructing the LLM to replace all instances of *I*, *me*, *my* with my actual full name and to make it **"abundantly clear that this chunk is about me"**. And then when my prompt gets sent to the vector database to retrieve relevant chunks, it's also augmented with my name by simply prepending it.
+This solution is quite simple, but a little bit hacky. I have a directory in my knowledge base with my first name. If the chunk processor is processing any file in this directory or any of its sub-directories, I add an additional prompt instructing the LLM to replace all instances of *I*, *me*, *my* with my actual full name and to make it **"abundantly clear that this chunk is about me"**. And then when my prompt gets sent to the vector database to retrieve relevant chunks, it's also augmented with my name by simply prepending it.
 
 > John Doe: What is my PB in the 5k?
 
@@ -149,9 +146,9 @@ To set up this system locally, we need a few ingredients:
 - A RAG system: *darkrag* (my very own)
 - A way to bring it all together: *n8n*
 
-I run all of these different components using *docker*. If you're not familiar with *docker*, there are plenty of guides out there to get you started.
+All of these components run in Docker containers. If you are new to Docker, I recommend checking out some beginner guides before proceeding.
 
-One important thing to note is that I configured all of my containers to run on a specified network named `ai-network`. This enables the different containers to talk to each other.
+All of my containers run on a custom Docker network called ai-network. This ensures they can communicate with each other without needing manual configuration.
 
 For my system (Arch Linux), I created daemons in my `~/systemd/.config/systemd/user/` directory, but you can easily adapt for whatever system you're using, be it Windows, Mac, or a different Linux distribution. I opted for running the containers separately, instead of in a large `docker-compose` setup, so I can easily enable/disable different components if I need to free up some memory.
 
@@ -275,8 +272,8 @@ BindsTo=default.target
 
 [Service]
 ExecStartPre=-/usr/bin/docker network create ai-network || true
-ExecStart=/usr/bin/docker compose -f ~/Apps/supabase/docker/docker-compose.yml up
-ExecStop=/usr/bin/docker compose -f ~/Apps/supabase/docker/docker-compose.yml down
+ExecStart=/usr/bin/docker compose -f %h/Apps/supabase/docker/docker-compose.yml up
+ExecStop=/usr/bin/docker compose -f %h/Apps/supabase/docker/docker-compose.yml down
 
 Restart=always
 RestartSec=5
@@ -351,6 +348,8 @@ $$;
 That was... a lot... But your **Supabase** instance should be ready now. Let's move onto setting up *darkrag*.
 
 ## Setting up darkrag
+
+By default, *darkrag* is designed for Markdown files because my knowledge base is mostly structured notes, documentation, and saved articles. However, if you work with other formats—like PDFs, plain text files, or even web pages—you can easily modify the file processing logic to support them.
 
 I made the *darkrag* system as easy as possible to set up. First, run this command to pull the image:
 

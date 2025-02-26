@@ -51,28 +51,30 @@ If you give this information to an LLM and use it as context, it might end up an
 **Input:** *Who forged the one ring of power?*  
 
 **LLM Response:**  
-*The One Ring was forged by Sauron and Agent Smith to control Middle-earth and enslave Elves, Dwarves, and Men. Neo is believed to be the One who will save humanity, but for some reason, he completely ignores the other races. Sauron tricked the Elves into helping, while Agent Smith just wanted to destroy both humans and the Matrix.*
+*The One Ring was forged by Sauron and Agent Smith to control Middle-earth and enslave Elves, Dwarves, and Men. Neo is believed to be the One who will save humanity, ignoring the other races. Sauron tricked the Elves into helping, while Agent Smith just wanted to destroy both humans and the Matrix.*
 
 ---
 
 **Input:** *Who or what was the Oracle in the Matrix?*  
 
 **LLM Response:**  
-*The Oracle is a program in the Matrix that guides Neo on his path, much like Galadriel, the Lady of Lothlórien, who offers wisdom and foresight to the Fellowship. Gandalf, a Maia, is sent to Middle-earth to guide and counsel. Together, they predict the coming of the One who will end the war, by throwing the Matrix into Mount Doom.*
+*The Oracle is a program in the Matrix that guides Neo on his path, much like Galadriel, the Lady of Lothlórien, who offers wisdom and foresight to the Fellowship. Together, they predict the coming of the One who will end the war, by throwing the Matrix into Mount Doom.*
+
+![Gandalf Mac](gandalf-mac.png)
 
 **What happened here?**
 
-Garbage in, garbage out. The vector database isn't designed to be smart. It's designed to take an input vector, sort its own vectors by most-similar, and return the top `x` items. It doesn't know what either of the movies are. In our second prompt, we even specifically ask about The Matrix. But if you've never seen the Matrix and don't know about the movie, how are you supposed to know which of these chunks belongs to which movie? The first chunk it returns correctly answers the question, as there's literally an *Oracle* in the matrix, so that is the most similar chunk. But an oracle, by concept, offers wisdom and foresight. So, it's kind of right to come to the conclusion that Galadriel is also similar.
+*Garbage in, garbage out.* The vector database isn't designed to be smart. It's designed to take an input vector, sort its own vectors by most-similar, and return the top `x` items. It doesn't know what either of the movies are. In our second prompt, we even specifically ask about The Matrix. But if you've never seen the Matrix and don't know about the movie, how are you supposed to know which of these chunks belongs to which movie? The first chunk correctly answers the question, as there's literally an *Oracle* in the matrix, so that is the most similar chunk. But an oracle, by concept, offers wisdom and foresight. So, considering what little context the vector database has to work with, it's not *that* wrong to the conclude that Galadriel is also similar.
 
 ## RAG Problem #2: First Person Perspective Confusion
 
 I write a lot in the first person. I write articles, technical documentation, tech talk preparations, emails, and I keep a professional diary with things I'm working on and achievements that I accomplished.
 
-But also, I save a lot of content from other people who write in the first person. Articles I find interesting but don't have the time to read (yet), documentation of tools and applications that I like to be able to refer to. Neatly organized into directories and sub-directories they may be, but they all go into the same knowledge base, my 2nd brain.
+But also, I save a lot of content from other people who write in the first person. Articles I find interesting but don't have the time to read (yet), documentation of tools and applications that I'd like to be able to refer to. Neatly organized into directories and sub-directories they may be, but they all go into the same knowledge base, my 2nd brain.
 
 But given the chunks *"I designed a robust data anomaly detection system."* and *"I climbed Mount Fuji in the least amount of steps."*, how is it supposed to know which one of those belongs to me (obviously it's the former, but a vector db doesn't know that).
 
-## Solving Context Blindness
+## Solving Context Blindness by Making Chunks “Context Aware”
 
 It's clear that storing individual chunks isn't going to cut it. Take a random chunk out of even a medium-sized document, and it's hard even for us humans to understand what the context is. So we need to make each chunk *context aware*.
 
@@ -92,7 +94,7 @@ This chunk is about the Oracle and how she relates to Neo.
 </chunk_summary>
 
 <chunk_headers>
-# The Matrix, ## The First Movie, ### Notable Characters, ### The Oracle
+# The Matrix, ## The First Movie, ### Notable Characters, #### The Oracle
 </chunk_headers>
 
 <chunk_content>
@@ -104,10 +106,10 @@ Even if you've never heard of The Matrix or The Oracle, this makes it clear how 
 
 *But how do we get these summaries and headers?*
 
-We ask the LLM to summarize the entire file by providing the first and last few chunks-since intros and conclusions usually carry the strongest contextual clues. Then, using this file summary as a guide, we have the LLM create a chunk-specific summary, ensuring the chunk is tied back to the broader topic. And finally, we extract the markdown headers and include the chunk's content. We put all the pieces together and store it in a separate database field called *full_context*.
+We ask an LLM to summarize the entire file by providing the first and last few chunks-since intros and conclusions usually carry the strongest contextual clues. Then, using this file summary as a guide, we have the LLM create a chunk-specific summary, ensuring the chunk is tied back to the broader topic. And finally, we extract the markdown headers and include the chunk's content. We put all the pieces together and store it in a separate database field called *full_context*.
 
-- **This *full_context* field is what we embed.**
-- **The original chunk content is what the database returns**
+- **This *full_context* field is what we vectorize and embed.**
+- **The original chunk content (augmented by the headers) is what the database returns**
 
 By embedding the chunk along with its broader context, we help the RAG system understand where the chunk fits within the bigger picture. Instead of treating it as an isolated sentence, it now knows it’s part of a document about The Matrix, and that this specific chunk focuses on the Oracle’s role.
 
@@ -115,13 +117,15 @@ By storing the *"full context"* in a separate database field, it allows us to:
 1. Check if the chunk we're processing is already in the database, so we don't have to ask an LLM to summarize it again.
 2. Return the original chunk content to keep the resulting prompt as small as possible.
 
-Remember, this is not to benefit the LLM. This is to benefit the vector database and help it figure out where to put pieces of information, so the most relevant information can be returned.
+*Remember, this is not to benefit the LLM. This is to benefit the vector database and help it figure out where to put pieces of information, so the most relevant information can be returned.*
 
-This simple addition of context isn’t just useful for decoding movie plots. In real-world scenarios—like legal document retrieval or technical knowledge bases—this strategy drastically reduces irrelevant results and hallucinations, leading to more accurate and trustworthy responses.
+This simple addition of context isn’t just useful for decoding movie plots. In real-world scenarios—like legal document retrieval or technical knowledge bases, this strategy drastically reduces irrelevant results and hallucinations, leading to more accurate and trustworthy responses.
 
 ## Solving the First Person Confusion
 
 This one is quite simple, and a little bit hacky. I have a directory in my knowledge base with my first name. If the chunk processor is processing any file in this directory or any of its sub-directories, I add an additional prompt instructing the LLM to replace all instances of *I*, *me*, *my* with my actual full name and to make it **"abundantly clear that this chunk is about me"**. And then when my prompt gets sent to the vector database to retrieve relevant chunks, it's also augmented with my name by simply prepending it.
+
+> John Doe: What is my PB in the 5k?
 
 Sure, this isn’t the most elegant fix, but it works. And when it comes to RAG systems, simple and effective often beats complex and fragile. By swapping out first-person pronouns with my full name in personal files, the system can now differentiate between my achievements and that travel blog I saved about climbing Mount Fuji.
 
@@ -135,7 +139,7 @@ To set up this system locally, we need a few ingredients:
 - An embedder: *nomic-embed-text*
 - A way to interact with the LLM: *open-webui*
 - A vector database: *Supabase*
-- A RAG system: *darkrag*
+- A RAG system: *darkrag* (my very own)
 - A way to bring it all together: *n8n*
 
 I run all of these different components using *docker*. If you're not familiar with *docker*, there are plenty of guides out there to get you started.
@@ -159,7 +163,7 @@ You can spin up `ollama` using this command:
 
 Important to note that I created a volume named `ollama_models` and mapped it to `/root/.ollama/models` inside the container. This ensures that when we shut down the container, we don't have to re-download the models.
 
-When ollama is running, run this command to go into the container:
+When **ollama** is running, run this command to go into the container:
 `docker exec -it ollama /bin/bash`
 
 Inside the container, run the `ollama pull` command to pull your desired language models. For this project, I recommend:
@@ -219,6 +223,7 @@ Just replace `user` and `password` with your desired postgres username and passw
 
 Open-webui is a popular web interface for interacting with your local language models. It looks and feels very similar to what you're used to with ChatGPT.
 
+<!-- TODO -->
 [screenshot of open-webui]
 
 You can easily run it with this command:
@@ -244,15 +249,15 @@ Here's the function I use in my system:
 
 ### Setting up Supabase
 
-Running Supabase locally and configuring it to work with this project is a bit more involved, but should be doable. You can follow their official guide here:
+Running **Supabase** locally and configuring it to work with this project is a bit more involved, but should be doable. You can follow their official guide here:
 
 [Self-hosting Supabase with Docker](https://supabase.com/docs/guides/self-hosting/docker)
 
-Once you have the `docker-compose` file for Supabase, you need to configure all the services in it to use our `ai-network` network so our other docker containers can see it. Here's my `docker-compose.yml` file for Supabase:
+Once you have the `docker-compose` file for **Supabase**, you need to configure all the services in it to use our `ai-network` network so our other docker containers can see it. Here's my `docker-compose.yml` file for **Supabase**:
 
 [Supabase customized docker-compose](https://github.com/DarkBones/darkrag/blob/main/supabase-docker-compose-example.yml)
 
-For my own setup, I cloned the Supabase repository in my `~/Apps` directory and run it with this daemon:
+For my own setup, I cloned the **Supabase** repository in my `~/Apps` directory and run it with this daemon:
 
 ```systemd
 ; systemd/.config/systemd/user/supabase.service
@@ -277,7 +282,7 @@ Notice the line where it says `ExecStartPre=-/usr/bin/docker network create ai-n
 
 #### Configuring Supabase
 
-Once you have Supabase set up and running, it's time to configure it. You can go to your supabase instance by navigating to `http://localhost:8000` in your browser. It will ask you for your username and password, you can find these credentials in the `.env` file of the Supabase repository you downloaded.
+Once you have **Supabase** set up and running, it's time to configure it. You can go to your **Supabase** instance by navigating to `http://localhost:8000` in your browser. It will ask you for your username and password, you can find these credentials in the `.env` file of the **Supabase** repository you downloaded.
 
 Then, go to *SQL editor* in the left navigation bar and run this command to create the `documents` table:
 
@@ -294,7 +299,7 @@ CREATE TABLE documents (
     full_context TEXT DEFAULT 'placeholder'::text
 );
 ```
-You can set up several tables with different names, if you want to have multiple knowledge-bases. My *darkrag* system supports having multiple tables.
+You can set up several tables with different names, if you want to have multiple knowledge-bases. My *darkrag* tool supports having multiple tables.
 
 Aside from a table to store your embeddings in, you also need a way to query them by similarity. Run this command in the *SQL editor* to create the function to match embeddings by cosine similarity:
 
@@ -335,7 +340,8 @@ begin
 end;
 $$;
 ```
-That was a lot... But your Supabase instance should be ready now. Let's move onto setting up *darkrag*
+
+That was... a lot... But your **Supabase** instance should be ready now. Let's move onto setting up *darkrag*.
 
 ## Setting up darkrag
 
@@ -356,7 +362,7 @@ AUTHOR_PRONOUN_ONE=he
 AUTHOR_PRONOUN_TWO=him
 
 SUPABASE_URL=http://kong:8000
-SUPABASE_KEY=your-supabase-key-as-found-in-your-supabase-.env-file
+SUPABASE_KEY=your-supabase-key-as-found-in-your-supabase-env-file
 
 OLLAMA_URL=http://ollama:11434
 DEFAULT_MODEL=qwen2.5:7b
@@ -367,7 +373,7 @@ EMBEDDING_MODEL=nomic-embed-text:latest
 - `AUTHOR_NAME`: For any file in the `AUTHOR_NAME` directory, or any of its sub-directories, *darkrag* will prompt the chunk summarizer to replace all first-person references like *"I"* or *"me"* with your full name, to solve the *"first-person confusion problem"*. For example, if a file in `your-knowledge-base-directory/John/about-john.md` contains `I like trains`, the chunk summarizer will add something like *"John Doe likes trains"* to the contextualized summary of the chunk.
 - `AUTHOR_FULL_NAME`: Your full name so *darkrag* can contextualize first-person chunks.
 - `AUTHOR_PRONOUN_ONE` & `AUTHOR_PRONOUN_TWO`: Needed for the prompt to contextualize first-person chunks.
-- `SUPABASE_KEY`: Needed to connect to the Supabase instance. You can find this key in your `.env` file of Supabase.
+- `SUPABASE_KEY`: Needed to connect to the **Supabase** instance. You can find this key in your `.env` file of **Supabase**.
 - `DEFAULT_MODEL`: The LLM that will summarize the chunks. I recommend `qwen2.5:7b` as it's light-weight and accurate enough.
 
 Replace the variables with actual values as needed.
@@ -375,10 +381,16 @@ Replace the variables with actual values as needed.
 Finally, run this command to run *darkrag*:
 
 ```
-docker run -p 8004:8004 --env-file [path-to-your-env-file] your_dockerhub_username/darkrag:latest
+docker run -p 8004:8004 --env-file [path-to-your-env-file] darkbones/darkrag:latest
+
+docker run --rm \
+  --network=ai-network
+  --name=darkrag
+  -v /mnt/SnapIgnore/AI/knowledge:/data
+  -p 8004:8004
 ```
 
-Just remember to replace `[path-to-your-env-file]` with the actual path to your `.env` file you created above.
+Just remember to replace `[path-to-your-env-file]` with the actual path to your `.env` file you created above. If you prefer, you can also provide the environment variables in the `docker-run` command directly if you prefer that over using an `.env` file.
 
 ### Setting up n8n
 
@@ -415,7 +427,7 @@ This is the command I run to spin it up (in a daemon):
 
 #### Configuring n8n
 
-First, you need to configure some credentials to allow *n8n* to talk to your other services like *ollama* and *Supabase*. Setting them up is pretty easy. In your *n8n* dashboard (`http:localhost:5678`), got to the *Credentials* tab and click on *New Credential*. Select the credential you want to add from the dropdown and follow the steps.
+First, you need to configure some credentials to allow *n8n* to talk to your other services like *ollama* and *Supabase*. Setting them up is pretty easy. In your *n8n* dashboard (`http:localhost:5678`), got to the *Credentials* tab and click on *New Credential*. Select the credential you want to add from the drop-down and follow the steps.
 
 ![Ollama Credential](ollama-credential.png)
 
@@ -423,7 +435,7 @@ First, you need to configure some credentials to allow *n8n* to talk to your oth
 
 I have 3 workflows in *n8n*:
 
-1. *Knowledge Base Updater*: Updates the knowledge base whenever I add, change, or delete a file.
+1. *Knowledge Base Updater*: Updates the database whenever I add, change, or delete a file in the knowledge base.
 2. *Knowledge Base Rebuilder*: Periodically runs through all the files in the knowledge base to make sure the vector database is up to date.
 3. *RAG Webhook*: Takes a user prompt, and returns the 5 most relevant chunks.
 
@@ -480,7 +492,7 @@ Finally, we configure our actual webhook. It's another pretty simple *n8n* workf
 
 ![RAG Webhook Overview](webhook-1.png)
 
-It contains only a couple of nodes. Here's the configuration for Supabase:
+It contains only a couple of nodes. Here's the configuration for **Supabase**:
 
 ![RAG Webhook Supabase](webhook-2.png)
 
@@ -512,12 +524,12 @@ And as a final step, return what *darkrag* responds with:
 That's it! Those are all the ingredients to set up your own 100% local, 100% free *RAG System*. Now when you interact with your favorite model in *open-webui* the following happens:
 
 1. The *open-webui* function intercepts your message and sends it to the webhook in *n8n*
-2. *n8n* sends your input to *supabase*
-3. *supabase* responds with the 5 most relevant chunks
+2. *n8n* sends your input to *Supabase*
+3. *Supabase* responds with the 5 most relevant chunks
 4. The *open-webui* function adds those chunks as context
 5. The LLM responds more accurately to your input
 
 And when you add, change, or delete a document from your knowledge base:
 
 1. *n8n* sends the file path to *darkrag*
-2. *darkrag* adds more context by summarizing the chunks, and stores the embeddings of contextualized version, along with the original data, on *supabase*
+2. *darkrag* adds more context by summarizing the chunks, and stores the embeddings of contextualized version, along with the original data, on *Supabase*

@@ -270,7 +270,7 @@ ollama pull nomic-embed-text
 </code></pre><p>Just remember to replace <code>[path-to-your-env-file]</code> with the actual path to your <code>.env</code> file you created above. If you prefer, you can also provide the environment variables in the <code>docker-run</code> command directly if you prefer that over using an <code>.env</code> file.</p>
 <h3 id="setting-up-n8n">Setting up n8n</h3>
 <p>Now that we have all the individual pieces of the puzzle, it&rsquo;s time to put everything together. If you&rsquo;re not familiar with <em>n8n</em>, it&rsquo;s a powerful, low-code workflow automation tool that allows you to connect various apps, services, and APIs to streamline processes and automate tasks efficiently.</p>
-<p>This is the command I run to spin it up (in a daemon):</p>
+<p>This is the command I run to spin it up:</p>
 <pre tabindex="0"><code>/usr/bin/docker run --rm \
     --network=ai-network \
     --name=n8n \

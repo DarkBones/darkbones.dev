@@ -243,7 +243,7 @@ You can easily run it with this command:
     ghcr.io/open-webui/open-webui:main
 ```
 
-I have a directory on my local machine, `/mnt/SnapIgnore/AI/ollama/conversations` where I store the conversation data, but this can be any folder on your local machine that you prefer.
+I have a directory on my local machine, `/mnt/SnapIgnore/AI/ollama/conversations` where I store the conversation data, but this can be any directory on your local machine that you prefer.
 
 You also need to set up a *"Function"* in open-webui to intercept your prompts and augment them with data from your knowledge base. In your browser, navigate to `http://localhost:4080`, then to `Settings > Admin Panel > Functions` and create a new function. Don't forget to enable the function by clicking on the 3 dots next to the function name, and enabling *Global* to enable the function for all your model conversations. Alternatively, you can enable the function separately for each model by going into the model settings.
 

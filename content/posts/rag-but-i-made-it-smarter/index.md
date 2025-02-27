@@ -402,7 +402,7 @@ Just remember to replace `[path-to-your-env-file]` with the actual path to your 
 
 Now that we have all the individual pieces of the puzzle, it's time to put everything together. If you're not familiar with *n8n*, it's a powerful, low-code workflow automation tool that allows you to connect various apps, services, and APIs to streamline processes and automate tasks efficiently.
 
-This is the command I run to spin it up (in a daemon):
+This is the command I run to spin it up:
 
 ```
 /usr/bin/docker run --rm \

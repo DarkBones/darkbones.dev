@@ -260,13 +260,13 @@ ollama pull nomic-embed-text
 </ul>
 <p>Replace the variables with actual values as needed.</p>
 <p>Finally, run this command to run <em>darkrag</em>:</p>
-<pre tabindex="0"><code>docker run -p 8004:8004 --env-file [path-to-your-env-file] darkbones/darkrag:latest
-
-docker run --rm \
-  --network=ai-network
-  --name=darkrag
-  -v /mnt/SnapIgnore/AI/knowledge:/data
-  -p 8004:8004
+<pre tabindex="0"><code>docker run --rm \
+  --env-file [path-to-your-env-file] \
+  --network=ai-network \
+  --name=darkrag \
+  -v /mnt/SnapIgnore/AI/knowledge:/data \
+  -p 8004:8004 \
+  darkbones/darkrag:latest
 </code></pre><p>Just remember to replace <code>[path-to-your-env-file]</code> with the actual path to your <code>.env</code> file you created above. If you prefer, you can also provide the environment variables in the <code>docker-run</code> command directly if you prefer that over using an <code>.env</code> file.</p>
 <h3 id="setting-up-n8n">Setting up n8n</h3>
 <p>Now that we have all the individual pieces of the puzzle, it&rsquo;s time to put everything together. If you&rsquo;re not familiar with <em>n8n</em>, it&rsquo;s a powerful, low-code workflow automation tool that allows you to connect various apps, services, and APIs to streamline processes and automate tasks efficiently.</p>

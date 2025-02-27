@@ -387,13 +387,13 @@ Replace the variables with actual values as needed.
 Finally, run this command to run *darkrag*:
 
 ```
-docker run -p 8004:8004 --env-file [path-to-your-env-file] darkbones/darkrag:latest
-
 docker run --rm \
-  --network=ai-network
-  --name=darkrag
-  -v /mnt/SnapIgnore/AI/knowledge:/data
-  -p 8004:8004
+  --env-file [path-to-your-env-file] \
+  --network=ai-network \
+  --name=darkrag \
+  -v /mnt/SnapIgnore/AI/knowledge:/data \
+  -p 8004:8004 \
+  darkbones/darkrag:latest
 ```
 
 Just remember to replace `[path-to-your-env-file]` with the actual path to your `.env` file you created above. If you prefer, you can also provide the environment variables in the `docker-run` command directly if you prefer that over using an `.env` file.

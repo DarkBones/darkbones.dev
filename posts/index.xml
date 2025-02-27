@@ -31,7 +31,7 @@ Output: [
 <p><strong>Input:</strong> <em>Who or what was the Oracle in the Matrix?</em></p>
 <p><strong>LLM Response:</strong><br>
 <em>The Oracle is a program in the Matrix that guides Neo on his path, much like Galadriel, the Lady of Lothlórien, who offers wisdom and foresight to the Fellowship. Together, they predict the coming of the One who will end the war, by throwing the Matrix into Mount Doom.</em></p>
-<p>!&ndash; Gandalf Mac](gandalf-mac.png)</p>
+<p><img src="gandalf-mac.png" alt="Gandalf Mac"></p>
 <p><strong>What happened here?</strong></p>
 <p><em>Garbage in, garbage out.</em> The vector database isn&rsquo;t designed to be smart. It&rsquo;s designed to take an input vector, sort its own vectors by most-similar, and return the top <code>x</code> items. It doesn&rsquo;t know what either of the movies are. In our second prompt, we even specifically ask about The Matrix. But if you&rsquo;ve never seen the Matrix and don&rsquo;t know the story, how are you supposed to know which of these chunks belongs to which movie? The first chunk correctly answers the question, as there&rsquo;s literally an <em>Oracle</em> in the matrix, so that is the most similar chunk. But an oracle, by concept, offers wisdom and foresight. So, considering what little context the vector database has to work with, it&rsquo;s not <em>that</em> wrong to conclude that Galadriel is also similar.</p>
 <h2 id="rag-problem-2-first-person-perspective-confusion">RAG Problem #2: First Person Perspective Confusion</h2>
@@ -146,7 +146,8 @@ ollama pull nomic-embed-text
 </code></pre><p>Just replace <code>user</code> and <code>password</code> with your desired postgres username and password.</p>
 <h3 id="setting-up-open-webui">Setting up Open-Webui</h3>
 <p>Open-webui is a popular web interface for interacting with your local language models. It looks and feels very similar to what you&rsquo;re used to with ChatGPT.</p>
-<p>[screenshot of open-webui]</p>
+<p>&lt;![TODO &ndash;&gt;
+<img src="open-webui.png" alt="open-webui"></p>
 <p>You can easily run it with this command:</p>
 <pre tabindex="0"><code>/usr/bin/docker run --rm \
     --network=ai-network \
@@ -297,8 +298,8 @@ docker run --rm \
 </ul>
 <h4 id="configuring-n8n">Configuring n8n</h4>
 <p>First, you need to configure some credentials to allow <em>n8n</em> to talk to your other services like <em>ollama</em> and <em>Supabase</em>. Setting them up is pretty easy. In your <em>n8n</em> dashboard (<code>http:localhost:5678</code>), got to the <em>Credentials</em> tab and click on <em>New Credential</em>. Select the credential you want to add from the drop-down and follow the steps.</p>
-<p>!&ndash; Ollama Credential](ollama-credential.png)</p>
-<p>!&ndash; Supabase Credential](supabase-credential.png)</p>
+<p><img src="ollama-credential.png" alt="Ollama Credential"></p>
+<p><img src="supabase-credential.png" alt="Supabase Credential"></p>
 <p>I have 3 workflows in <em>n8n</em>:</p>
 <ol>
 <li><em>Knowledge Base Updater</em>: Updates the database whenever I add, change, or delete a file in the knowledge base.</li>
@@ -308,9 +309,9 @@ docker run --rm \
 <p>Let&rsquo;s set them up one-by-one.</p>
 <p><strong>Knowledge Base Updater</strong></p>
 <p>This workflow has 2 sets of three nodes; one set for when a file is added or updated, another for when a file is deleted:</p>
-<p>!&ndash; Knowledge Base Updater Overview](knowledge-updater-1.png)</p>
+<p><img src="knowledge-updater-1.png" alt="Knowledge Base Updater Overview"></p>
 <p>The file updated entry node is configured like so:</p>
-<p>!&ndash; Knowledge Base Updater File Updated Node](knowledge-updater-2.png)</p>
+<p><img src="knowledge-updater-2.png" alt="Knowledge Base Updater File Updated Node"></p>
 <p>Remembered how we mapped a directory on our local machine to <code>/home/knowledge</code> in <code>n8n</code>? We&rsquo;re using that here!</p>
 <p>The code in the two <code>Code</code> nodes are identical:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">paths</span> <span style="color:#f92672">=</span> [];
@@ -321,21 +322,21 @@ docker run --rm \
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">return</span> { <span style="color:#a6e22e">paths</span> };
 </span></span></code></pre></div><p>It just removes <em>&quot;/home/knowledge/&quot;</em> from the start of the path, to match with what <em>darkrag</em> expects.</p>
 <p>And the two <em>Http Request</em> nodes:</p>
-<p>!&ndash; Knowledge Base Updater Update Request](knowledge-updater-3.png)</p>
-<p>!&ndash; Knowledge Base Updater Delete Request](knowledge-updater-4.png)</p>
+<p><img src="knowledge-updater-3.png" alt="Knowledge Base Updater Update Request"></p>
+<p><img src="knowledge-updater-4.png" alt="Knowledge Base Updater Delete Request"></p>
 <p><strong>Knowledge Base Rebuilder</strong></p>
 <p>This runs once a week to make doubly sure all the knowledge in the database is up to date.</p>
-<p>!&ndash; Knowledge Base Rebuilder](rebuilder-1.png)</p>
+<p><img src="rebuilder-1.png" alt="Knowledge Base Rebuilder"></p>
 <p>First, it deletes files from the database that are no longer present in the knowledge base.</p>
-<p>!&ndash; Knowledge Base Rebuilder Clean Database](rebuilder-2.png)</p>
+<p><img src="rebuilder-2.png" alt="Knowledge Base Rebuilder Clean Database"></p>
 <p>Then, it processes all files in the knowledge base to make sure all the information in the knowledge base is also in the database.</p>
-<p>!&ndash; Knowledge Base Rebuilder Process All](rebuilder-3.png)</p>
+<p><img src="rebuilder-3.png" alt="Knowledge Base Rebuilder Process All"></p>
 <p><strong>RAG Webhook</strong></p>
 <p>Finally, we configure our actual webhook. It&rsquo;s another pretty simple <em>n8n</em> workflow:</p>
-<p>!&ndash; RAG Webhook Overview](webhook-1.png)</p>
+<p><img src="webhook-1.png" alt="RAG Webhook Overview"></p>
 <p>It contains only a couple of nodes. Here&rsquo;s the configuration for <strong>Supabase</strong>:</p>
-<p>!&ndash; RAG Webhook Supabase](webhook-2.png)</p>
-<p>!&ndash; RAG Webhook Ollama](webhook-3.png)</p>
+<p><img src="webhook-2.png" alt="RAG Webhook Supabase"></p>
+<p><img src="webhook-3.png" alt="RAG Webhook Ollama"></p>
 <p>And the code inside the <em>Code</em> node that extracts the knowledge and prepares the request to <strong>darkrag</strong>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">knowledge</span> <span style="color:#f92672">=</span> [];
 </span></span><span style="display:flex;"><span>
@@ -350,7 +351,7 @@ docker run --rm \
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">return</span> { <span style="color:#a6e22e">knowledge</span> }
 </span></span></code></pre></div><p>And as a final step, return what <em>darkrag</em> responds with:</p>
-<p>!&ndash; RAG Webhook Respond](webhook-4.png)</p>
+<p><img src="webhook-4.png" alt="RAG Webhook Respond"></p>
 <h2 id="conclusion">Conclusion</h2>
 <p>That&rsquo;s it! Those are all the ingredients to set up your own 100% local, 100% free <em>RAG System</em>. Now when you interact with your favorite model in <em>open-webui</em> the following happens:</p>
 <ol>

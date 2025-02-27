@@ -157,7 +157,7 @@ ollama pull nomic-embed-text
     -v /mnt/SnapIgnore/AI/ollama/conversations:/app/backend/data \
     --name open-webui \
     ghcr.io/open-webui/open-webui:main
-</code></pre><p>I have a directory on my local machine, <code>/mnt/SnapIgnore/AI/ollama/conversations</code> where I store the conversation data, but this can be any folder on your local machine that you prefer.</p>
+</code></pre><p>I have a directory on my local machine, <code>/mnt/SnapIgnore/AI/ollama/conversations</code> where I store the conversation data, but this can be any directory on your local machine that you prefer.</p>
 <p>You also need to set up a <em>&ldquo;Function&rdquo;</em> in open-webui to intercept your prompts and augment them with data from your knowledge base. In your browser, navigate to <code>http://localhost:4080</code>, then to <code>Settings &gt; Admin Panel &gt; Functions</code> and create a new function. Don&rsquo;t forget to enable the function by clicking on the 3 dots next to the function name, and enabling <em>Global</em> to enable the function for all your model conversations. Alternatively, you can enable the function separately for each model by going into the model settings.</p>
 <p>Here&rsquo;s the function I use in my system:</p>
 <p><a href="https://github.com/DarkBones/darkrag/blob/main/open-webui-webhook-function-example.py">Open-Webui Webhook Function</a></p>

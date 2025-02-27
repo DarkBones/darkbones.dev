@@ -539,3 +539,9 @@ And when you add, change, or delete a document from your knowledge base:
 
 1. *n8n* sends the file path to *darkrag*
 2. *darkrag* adds more context by summarizing the chunks, and stores the embeddings of contextualized version, along with the original data, on *Supabase*
+
+**"Does *darkrag* this solve all problems with RAG?"**
+
+No, **darkrag** is not a silver bullet. It won’t reliably answer questions like *“What happened last week?”* or *“Rank my achievements by impressiveness.”* Instead, it’s a foundation for *better chunking and embedding*, ensuring retrieved chunks retain the context of their source documents.  
+
+Think of **darkrag** as a *starting block* for building more advanced RAG agents, not a complete solution. You can take the basic *n8n* setup from this article and extend it into a truly agentic RAG system.

@@ -64,7 +64,7 @@ If you give this information to an LLM and use it as context, it might end up an
 **LLM Response:**  
 *The Oracle is a program in the Matrix that guides Neo on his path, much like Galadriel, the Lady of Lothlórien, who offers wisdom and foresight to the Fellowship. Together, they predict the coming of the One who will end the war, by throwing the Matrix into Mount Doom.*
 
-!-- Gandalf Mac](gandalf-mac.png)
+![Gandalf Mac](gandalf-mac.png)
 
 **What happened here?**
 
@@ -227,8 +227,8 @@ Just replace `user` and `password` with your desired postgres username and passw
 
 Open-webui is a popular web interface for interacting with your local language models. It looks and feels very similar to what you're used to with ChatGPT.
 
-<!-- TODO -->
-[screenshot of open-webui]
+<![TODO -->
+![open-webui](open-webui.png)
 
 You can easily run it with this command:
 
@@ -435,9 +435,9 @@ This is the command I run to spin it up (in a daemon):
 
 First, you need to configure some credentials to allow *n8n* to talk to your other services like *ollama* and *Supabase*. Setting them up is pretty easy. In your *n8n* dashboard (`http:localhost:5678`), got to the *Credentials* tab and click on *New Credential*. Select the credential you want to add from the drop-down and follow the steps.
 
-!-- Ollama Credential](ollama-credential.png)
+![Ollama Credential](ollama-credential.png)
 
-!-- Supabase Credential](supabase-credential.png)
+![Supabase Credential](supabase-credential.png)
 
 I have 3 workflows in *n8n*:
 
@@ -451,11 +451,11 @@ Let's set them up one-by-one.
 
 This workflow has 2 sets of three nodes; one set for when a file is added or updated, another for when a file is deleted:
 
-!-- Knowledge Base Updater Overview](knowledge-updater-1.png)
+![Knowledge Base Updater Overview](knowledge-updater-1.png)
 
 The file updated entry node is configured like so:
 
-!-- Knowledge Base Updater File Updated Node](knowledge-updater-2.png)
+![Knowledge Base Updater File Updated Node](knowledge-updater-2.png)
 
 Remembered how we mapped a directory on our local machine to `/home/knowledge` in `n8n`? We're using that here!
 
@@ -474,35 +474,35 @@ It just removes *"/home/knowledge/"* from the start of the path, to match with w
 
 And the two *Http Request* nodes:
 
-!-- Knowledge Base Updater Update Request](knowledge-updater-3.png)
+![Knowledge Base Updater Update Request](knowledge-updater-3.png)
 
-!-- Knowledge Base Updater Delete Request](knowledge-updater-4.png)
+![Knowledge Base Updater Delete Request](knowledge-updater-4.png)
 
 **Knowledge Base Rebuilder**
 
 This runs once a week to make doubly sure all the knowledge in the database is up to date.
 
-!-- Knowledge Base Rebuilder](rebuilder-1.png)
+![Knowledge Base Rebuilder](rebuilder-1.png)
 
 First, it deletes files from the database that are no longer present in the knowledge base.
 
-!-- Knowledge Base Rebuilder Clean Database](rebuilder-2.png)
+![Knowledge Base Rebuilder Clean Database](rebuilder-2.png)
 
 Then, it processes all files in the knowledge base to make sure all the information in the knowledge base is also in the database.
 
-!-- Knowledge Base Rebuilder Process All](rebuilder-3.png)
+![Knowledge Base Rebuilder Process All](rebuilder-3.png)
 
 **RAG Webhook**
 
 Finally, we configure our actual webhook. It's another pretty simple *n8n* workflow:
 
-!-- RAG Webhook Overview](webhook-1.png)
+![RAG Webhook Overview](webhook-1.png)
 
 It contains only a couple of nodes. Here's the configuration for **Supabase**:
 
-!-- RAG Webhook Supabase](webhook-2.png)
+![RAG Webhook Supabase](webhook-2.png)
 
-!-- RAG Webhook Ollama](webhook-3.png)
+![RAG Webhook Ollama](webhook-3.png)
 
 And the code inside the *Code* node that extracts the knowledge and prepares the request to **darkrag**:
 
@@ -523,7 +523,7 @@ return { knowledge }
 
 And as a final step, return what *darkrag* responds with:
 
-!-- RAG Webhook Respond](webhook-4.png)
+![RAG Webhook Respond](webhook-4.png)
 
 ## Conclusion
 

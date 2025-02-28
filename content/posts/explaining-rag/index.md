@@ -141,10 +141,6 @@ However, splitting information into chunks introduces a new problem. Just as *Wo
 
 Here is a problem I encountered recently. I keep a detailed work diary where I document all my professional achievements. It is extremely useful during performance reviews. However, when I ask my RAG system what I achieved at my current company, it confidently includes accomplishments from my previous jobs. Because I write this diary in the first person and also include information from other sources written in the first person, the system cannot distinguish between them. As a result, it starts attributing achievements to me that I had nothing to do with. That is how I realized something was wrong. My system was suddenly telling me about all the interesting things I supposedly did away from the computer, which is impossible since I never leave my desk.  
 
-**Want to know how I fixed this mess?** In [the next article], I walk you through how I made my RAG system **context-aware**. You can even steal my code and set it up on your own computer with a couple of commands.
-
-As I learned firsthand, retrieving information *does not guarantee understanding*. In [my next article]({{< relref "rag-but-i-made-it-smarter/index.md" >}}), I demonstrate how I made my RAG system **context-aware** so that it can truly comprehend the context of the data it retrieves.
-
 ## Conclusion
 
 RAG makes LLMs more useful by letting them retrieve information they wouldn’t otherwise have access to. But it’s not magic. It comes with its own challenges, from handling context properly to avoiding irrelevant results.  

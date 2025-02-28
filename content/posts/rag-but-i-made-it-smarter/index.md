@@ -94,7 +94,7 @@ This file contains a detailed explanation of the Matrix film trilogy.
 </file_summary>
 
 <chunk_summary>
-This chunk is about the Oracle and how she relates to Neo.
+This chunk contains details about the character "The Oracle".
 </chunk_summary>
 
 <chunk_headers>

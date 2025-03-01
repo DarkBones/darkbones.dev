@@ -372,10 +372,10 @@ ollama pull nomic-embed-text
 <p>You can extend darkrag to fit your needs. The source code is available on GitHub:</p>
 <p><a href="https://github.com/DarkBones/darkrag">https://github.com/DarkBones/darkrag</a></p>
 ]]></content></item><item><title>Beyond Training Data: How RAG Lets LLMs Retrieve, Not Guess</title><link>https://darkbones.dev/posts/explaining-rag/</link><pubDate>Sun, 23 Feb 2025 12:34:51 +0100</pubDate><guid>https://darkbones.dev/posts/explaining-rag/</guid><description>&lt;p>&lt;img src="cover-image.png" alt="Retrieval-Augmented Generation">&lt;/p>
-&lt;p>&lt;strong>Large Language Models (LLMs) like GPT-4 don’t actually &amp;lsquo;know&amp;rsquo; anything—they predict words based on old training data. Retrieval-Augmented Generation (RAG) changes that by letting AI pull in fresh, real-world knowledge before answering.&lt;/strong>&lt;/p>
-&lt;p>&lt;strong>RAG enhances LLMs by enabling them to retrieve relevant information from external sources before generating a response. Because LLMs rely on static training data and don’t update automatically, RAG gives them access to fresh, domain-specific, or private knowledge without the need for costly retraining.&lt;/strong>&lt;/p></description><content type="html"><![CDATA[<p><img src="cover-image.png" alt="Retrieval-Augmented Generation"></p>
-<p><strong>Large Language Models (LLMs) like GPT-4 don’t actually &lsquo;know&rsquo; anything—they predict words based on old training data. Retrieval-Augmented Generation (RAG) changes that by letting AI pull in fresh, real-world knowledge before answering.</strong></p>
-<p><strong>RAG enhances LLMs by enabling them to retrieve relevant information from external sources before generating a response. Because LLMs rely on static training data and don’t update automatically, RAG gives them access to fresh, domain-specific, or private knowledge without the need for costly retraining.</strong></p>
+&lt;p>&lt;strong>Large Language Models (LLMs) like GPT-4 don’t actually &amp;lsquo;know&amp;rsquo; anything, they predict words based on old training data. Retrieval-Augmented Generation (RAG) changes that by letting AI pull in fresh, real-world knowledge before answering.&lt;/strong>&lt;/p>
+&lt;p>&lt;strong>RAG enhances LLMs by enabling them to retrieve relevant information from external sources before generating a response. Because LLMs rely on static training data and don’t update automatically, RAG gives them access to fresh, domain-specific, or private knowledge, without the need for costly retraining.&lt;/strong>&lt;/p></description><content type="html"><![CDATA[<p><img src="cover-image.png" alt="Retrieval-Augmented Generation"></p>
+<p><strong>Large Language Models (LLMs) like GPT-4 don’t actually &lsquo;know&rsquo; anything, they predict words based on old training data. Retrieval-Augmented Generation (RAG) changes that by letting AI pull in fresh, real-world knowledge before answering.</strong></p>
+<p><strong>RAG enhances LLMs by enabling them to retrieve relevant information from external sources before generating a response. Because LLMs rely on static training data and don’t update automatically, RAG gives them access to fresh, domain-specific, or private knowledge, without the need for costly retraining.</strong></p>
 <blockquote>
 <p><strong>Let&rsquo;s explore how <strong>RAG</strong> works, why it is useful, and how it differs from traditional LLM prompting.</strong></p></blockquote>
 <h2 id="what-is-retrieval-augmented-generation-rag-in-ai">What is Retrieval-Augmented Generation (RAG) in AI?</h2>
@@ -439,12 +439,12 @@ the user&#39;s original prompt
 <p>The math remains the same. Four dimensions? That requires a <em>four-digit</em> coordinate system. One hundred dimensions? That requires a <em>100-digit</em> coordinate system.</p>
 <p><img src="this-is-fine.png" alt="This is Fine"></p>
 <blockquote>
-<p><strong>&ldquo;The embedder I use operates in a mind-bending, 768-dimensional coordinate system—far beyond human perception.&rdquo;</strong></p></blockquote>
+<p><strong>&ldquo;The embedder I use operates in a mind-bending, 768-dimensional coordinate system, far beyond human perception.&rdquo;</strong></p></blockquote>
 <p>When you have finished trying to visualize that, we can return to simpler, easy-to-draw, two-dimensional graphs.</p>
 <h2 id="how-vector-embeddings-help-llms-retrieve-data">How Vector Embeddings Help LLMs Retrieve Data</h2>
 <p>Vectors by themselves are simply <em>n-dimensional coordinates</em> that represent points in <em>n-dimensional space</em>.</p>
 <blockquote>
-<p><strong>&ldquo;Vectors aren’t just numbers—they encode meaning. Their true power lies in the information they represent.&rdquo;</strong></p></blockquote>
+<p><strong>&ldquo;Vectors aren’t just numbers, they encode meaning. Their true power lies in the information they represent.&rdquo;</strong></p></blockquote>
 <p>In the same way, vectors are coordinates not to places, but to information. A specialized LLM, an <em>embedder</em>, is trained on a large corpus of text to figure out similarities and to place these pieces of information somewhere in <em>n-dimensional space</em> such that similar topics tend to be grouped together.</p>
 <p>Like, when you go to a social event, you&rsquo;re likely to stick with your friends, colleagues, or at least a group of like-minded people.</p>
 <h4 id="grouping-similar-concepts-together">Grouping Similar Concepts Together</h4>
@@ -463,7 +463,7 @@ the user&#39;s original prompt
 <p>One thing I find particularly fascinating with Word2Vec is that, since words are now represented by numbers, you can actually do arithmetic on them.</p>
 <p>You can make equations like</p>
 <blockquote>
-<p><strong>&quot;<code>king - man + woman = queen</code> — a legendary example of how AI models map relationships in vector space.&quot;</strong></p></blockquote>
+<p><strong>&quot;<code>king - man + woman = queen</code> - a legendary example of how AI models map relationships in vector space.&quot;</strong></p></blockquote>
 <p>It&rsquo;s wild, but it works (most of the time).</p>
 <p><strong>Tangent over.</strong></p>
 <h3 id="how-are-vectors-used">How are Vectors Used?</h3>

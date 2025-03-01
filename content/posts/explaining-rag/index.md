@@ -16,9 +16,9 @@ draft = false
 
 ![Retrieval-Augmented Generation](cover-image.png)
 
-**Large Language Models (LLMs) like GPT-4 don’t actually 'know' anything—they predict words based on old training data. Retrieval-Augmented Generation (RAG) changes that by letting AI pull in fresh, real-world knowledge before answering.**
+**Large Language Models (LLMs) like GPT-4 don’t actually 'know' anything, they predict words based on old training data. Retrieval-Augmented Generation (RAG) changes that by letting AI pull in fresh, real-world knowledge before answering.**
 
-**RAG enhances LLMs by enabling them to retrieve relevant information from external sources before generating a response. Because LLMs rely on static training data and don’t update automatically, RAG gives them access to fresh, domain-specific, or private knowledge without the need for costly retraining.**
+**RAG enhances LLMs by enabling them to retrieve relevant information from external sources before generating a response. Because LLMs rely on static training data and don’t update automatically, RAG gives them access to fresh, domain-specific, or private knowledge, without the need for costly retraining.**
 
 > **Let's explore how **RAG** works, why it is useful, and how it differs from traditional LLM prompting.**
 
@@ -111,7 +111,7 @@ The math remains the same. Four dimensions? That requires a *four-digit* coordin
 
 ![This is Fine](this-is-fine.png)
 
-> **"The embedder I use operates in a mind-bending, 768-dimensional coordinate system—far beyond human perception."**  
+> **"The embedder I use operates in a mind-bending, 768-dimensional coordinate system, far beyond human perception."**  
 
 When you have finished trying to visualize that, we can return to simpler, easy-to-draw, two-dimensional graphs.
 
@@ -119,7 +119,7 @@ When you have finished trying to visualize that, we can return to simpler, easy-
 
 Vectors by themselves are simply *n-dimensional coordinates* that represent points in *n-dimensional space*.
 
-> **"Vectors aren’t just numbers—they encode meaning. Their true power lies in the information they represent."**  
+> **"Vectors aren’t just numbers, they encode meaning. Their true power lies in the information they represent."**  
 
 In the same way, vectors are coordinates not to places, but to information. A specialized LLM, an *embedder*, is trained on a large corpus of text to figure out similarities and to place these pieces of information somewhere in *n-dimensional space* such that similar topics tend to be grouped together.
 
@@ -148,7 +148,7 @@ One thing I find particularly fascinating with Word2Vec is that, since words are
 
 You can make equations like 
 
-> **"`king - man + woman = queen` — a legendary example of how AI models map relationships in vector space."**  
+> **"`king - man + woman = queen` - a legendary example of how AI models map relationships in vector space."**  
 
 It's wild, but it works (most of the time).
 

@@ -10,7 +10,7 @@ description = "A deep dive into the problems of RAG, how I made my own system co
 showFullContent = false
 readingTime = true
 hideComments = true
-draft = false
+draft = true
 +++
 **If you're just here for the setup, you can [skip to the tutorial](#setting-it-all-up). If you're not familiar with RAG, you might want to check out [my previous article]({{< relref "explaining-rag/index.md" >}}) first.**
 

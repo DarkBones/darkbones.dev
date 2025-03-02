@@ -11,7 +11,7 @@ description = "How Retrieval-Augmented Generation (RAG) improves AI by letting m
 showFullContent = false
 readingTime = true
 hideComments = true
-draft = false
+draft = true
 +++
 
 ![Retrieval-Augmented Generation](cover-image.png)

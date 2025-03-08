@@ -1,5 +1,5 @@
 +++
-title = "RAG, But I Made it Smarter"
+title = "You're Doing RAG Wrong"
 date = "2025-02-25T16:55:55+01:00"
 author = "DarkBones"
 authorTwitter = "" #do not include @
@@ -12,81 +12,143 @@ readingTime = true
 hideComments = true
 draft = true
 +++
-**If you're just here for the setup, you can [skip to the tutorial](#setting-it-all-up). If you're not familiar with RAG, you might want to check out [my previous article]({{< relref "explaining-rag/index.md" >}}) first.**
 
-Retrieval-Augmented Generation (RAG) is great—until it isn’t. While it helps LLMs pull in external knowledge, it comes with its own headaches. If you've ever had a RAG system return irrelevant information, mash together unrelated concepts, or confidently misinterpret first-person writing, you've run into these issues.  
+<!-- TODO: Make the links work for Medium -->
+# You’re Doing RAG Wrong
 
-In this article, I’ll walk you through two major problems I encountered while building my own RAG system: **context blindness** (where retrieved chunks lack enough information to be useful) and **first-person confusion** (where the system doesn’t know who “I” refers to). More importantly, I’ll show you how I fixed them—so your RAG system actually understands what it’s retrieving.  
+> How To Set Up RAG Locally and Avoid Common Issues
 
-By the end, you’ll have everything you need to **set up your own 100% local, 100% free, context-aware RAG system**, complete with LLMs, a vector database, and automation to tie it all together.
+✔️ **Want to skip straight to the setup? [Jump to the tutorial](#setting-it-all-up).**
 
-## RAG Problem #1: Context Blindness
+✔️ **Need a RAG refresher? [Check out my previous article]({{< relref "explaining-rag/index.md" >}}).**
 
-To illustrate the problems with RAG, let's say my vector database holds detailed plots of my favorite movie series. Let's pick two series that couldn't be further from each other: *The Matrix* and *The Lord of the Rings*. For illustration purposes, let's say we're using a small chunk size and no overlap.
+> **RAG Works... Until It Doesn't**
 
-We have blindly split our movie plots into chunks and stored them in our vector database, along with their embeddings. We even take a smart approach by splitting it into full sentences rather than arbitrarily splitting at a fixed number of characters.
+**RAG sounds great, until you try implementing it. Then the cracks start to show.**
 
-Now watch what might happen if you query the vector database with a question, and what it might return.
+RAG pulls in **irrelevant chunks**, **mashes together unrelated ideas**, and **confidently misattributes first-person writing**, turning useful context into a confusing mess.
+
+# How to Make RAG Smarter
+
+I ran into two major issues when building my own RAG system:
+- 🧩 **Context Blindness** – When retrieved chunks don’t carry enough information to be useful.
+- 🤦 **First-Person Confusion** – When the system doesn’t know who "I" refers to.
+
+I'll show you exactly how I **fixed these problems**, so your RAG system actually understands what it retrieves.
+
+By the end, you'll have a **100% local, 100% free, context-aware RAG system** running with your preferred LLM and interface. We'll also set up an **automated knowledge base**, so adding new information is *frictionless*.
+
+# Before we get started...
+
+Enjoying this deep-dive? Here's how you can help:
+- 👏 **Clap for this article** – It helps more people find it.
+- 🔔 **Follow me** – I write about AI, programming, data science, and cool tech. More posts like this are coming!
+- 💬 **Leave a comment** – Have you struggled with RAG? Found a better way to chunk data? Let's talk!
+
+# 🧩 RAG Problem #1: Context Blindness
+
+Let's say my vector database holds detailed plots of two wildly different movie series: *The Matrix* and *The Lord of the Rings*. For simplicity, we're using **small chunks with no overlap**.
+
+Each plot is split into sentences and stored as **embeddings in a vector database**. This should work well, right? ...Right?
+
+## What Happens When We Query the Database?
+
+Let's see what happens when we ask a few questions.
 
 ```
-Input:  Who forged the one ring of power?
+Input:  Who forged the One Ring and why?
 Output: [
   "Sauron forged the One Ring in Mount Doom to control Middle-earth.",
-  "Neo is believed to be the One who will save humanity.",
   "The One Ring was made to enslave Elves, Dwarves, and Men.",
-  "Agent Smith wants to destroy both humans and the Matrix.",
-  "Sauron tricked the Elves and secretly made the One Ring."
+  "Neo is believed to be the One who will save humanity.",
+  "Morpheus was on a mission to find The One.",
+  "The One is a prophesied figure destined to bring balance and end the war."
 ]
 ```
 
 ```
-Input:  Who or what was the Oracle in the Matrix?
+Input:  Who or what was the Oracle in The Matrix?
 Output: [
-  "The Oracle is a program in the Matrix that guides Neo on his path."  
-  "Galadriel, the Lady of Lothlórien, offers wisdom and foresight to the Fellowship."  
-  "The Oracle helps humans understand their choices within the Matrix."  
-  "Gandalf is a Maia, sent to Middle-earth to guide and counsel its people."  
+  "The Oracle is a program in the Matrix that guides Neo on his path."  ,
+  "Galadriel, the Lady of Lothlórien, offers wisdom and foresight to the Fellowship.",
+  "The Oracle helps humans understand their choices within the Matrix.",
+  "Gandalf is a Maia, sent to Middle-earth to guide and counsel its people.",
   "The Oracle predicts the coming of the One who will end the war."  
 ]
 ```
 
-If you give this information to an LLM and use it as context, it might end up answering the questions like this:
+Now, let's feed this context to an **LLM** and see what it generates.
 
-**Input:** *Who forged the one ring of power?*  
+---
+
+**Input:**
+
+*Who forged the One Ring and why?*
 
 **LLM Response:**  
+
 *The One Ring was forged by Sauron and Agent Smith to control Middle-earth and enslave Elves, Dwarves, and Men. Neo is believed to be the One who will save humanity, ignoring the other races. Sauron tricked the Elves into helping, while Agent Smith just wanted to destroy both humans and the Matrix.*
 
 ---
 
-**Input:** *Who or what was the Oracle in the Matrix?*  
+**Input:**
+
+*Who or what was the Oracle in the Matrix?*  
 
 **LLM Response:**  
+
 *The Oracle is a program in the Matrix that guides Neo on his path, much like Galadriel, the Lady of Lothlórien, who offers wisdom and foresight to the Fellowship. Together, they predict the coming of the One who will end the war, by throwing the Matrix into Mount Doom.*
 
-![Gandalf Mac](gandalf-mac.png)
+---
 
-**What happened here?**
+![A fantasy-style wizard in a green robe and pointed hat holds a glowing green CRT monitor over a volcanic chasm, with molten lava and fire in the background. The wizard’s long hair flows as they extend the monitor dramatically, evoking a ritualistic or sacrificial gesture. The eerie green light from the screen contrasts with the fiery orange glow of the lava, creating a mystical and surreal atmosphere.](wizard-throwing-computer-in-volcano.png)
 
-*Garbage in, garbage out.* The vector database isn't designed to be smart. It's designed to take an input vector, sort its own vectors by most-similar, and return the top `x` items. It doesn't know what either of the movies are. In our second prompt, we even specifically ask about The Matrix. But if you've never seen the Matrix and don't know the story, how are you supposed to know which of these chunks belongs to which movie? The first chunk correctly answers the question, as there's literally an *Oracle* in the matrix, so that is the most similar chunk. But an oracle, by concept, offers wisdom and foresight. So, considering what little context the vector database has to work with, it's not *that* wrong to conclude that Galadriel is also similar.
+## What Went Wrong?
 
-## RAG Problem #2: First Person Perspective Confusion
+> Garbage in, garbage out.
 
-I write a lot in the first person. I write articles, technical documentation, tech talk preparations, emails, and I keep a professional diary with things I'm working on and achievements that I accomplished.
+- The **vector database isn't smart**, it just sorts by similarity.
+- It doesn't **know what a "movie" is** or that *The Matrix* and *The Lord of the Rings* are different stories.
+- **"Oracle"** is a vague term, so it retrieves Galadriel too.
+- The LLM **blindly accepts the context**, mashing concepts together into nonsense.
 
-But I also store content written by other people in the first person—articles I find interesting but haven’t read yet, documentation for tools I reference, and other resources. They may be neatly organized into directories and sub-directories, but in the end, they all go into the same knowledge base.
+The retrieved chunks **lack broader meaning**, causing **irrelevant mashups and hallucinations**.
 
-But given the chunks *"I designed a robust data anomaly detection system."* and *"I climbed Mount Fuji in the least amount of steps."*, how is it supposed to know which one belongs to me? Obviously, it's the former, but a vector database has no way of knowing that.
+> In fact, we might have been better off **giving the LLM no context at all**.
 
-## Solving Context Blindness by Making Chunks “Context Aware”
+This is **Context Blindness** and it's why naive RAG implementations often do more harm than good.
 
-It's clear that storing individual chunks isn't going to cut it. Take a random chunk out of even a medium-sized document, and it's hard even for us humans to understand what the context is. So we need to make each chunk *context aware*.
+# 🤦 RAG Problem #2: First Person Perspective Confusion
 
-Let's take a chunk from our example:
+I write a lot in the first person. **Articles**, **technical documentation**, **talk preparations**, **emails**, and a **professional diary** tracking my work and achievements.
+
+But my knowledge base doesn't just store *my* writing. It also holds:
+- **Articles** I saved for later
+- **Documentation** for tools I reference
+- **Other resources**, all mixed together
+
+But when a query retrieves these chunks, how would an LLM know which one is actually about me?
+
+> "I designed a robust data anomaly detection system."
+> 
+> "I climbed Mount Fuji in the least amount of steps."
+
+Obviously, it's the former, but a vector database has no way of knowing that.
+
+# 🛠️ Solving Context Blindness with Context-Aware Chunks
+
+<!-- It's clear that storing individual chunks isn't going to cut it. Take a random chunk out of even a medium-sized document, and it's hard even for us humans to understand what the context is. So we need to make each chunk *context aware*. -->
+Storing **raw chunks** isn't enough. Even humans struggle to understand isolated sentences without context, so why would a vector database do any better?
+
+> We need to make each chunk **context aware**.
+
+## Before vs. After: A Smarter Chunk
+
+Here's a **raw chunk** from our example:
 
 > The Oracle is a program in the Matrix that guides Neo on his path.
 
-Here's what a *context aware* version of the chunk looks like:
+And here's a **context-aware** version:
 
 ```
 <file_summary>
@@ -106,55 +168,86 @@ The Oracle is a program in the Matrix that guides Neo on his path.
 </chunk_content>
 ```
 
-Even if you've never heard of The Matrix or The Oracle, this makes it clear how relevant the chunk is to a prompt like: *'Who or what was the Oracle in the Matrix?'*
+Even if you don't know The Matrix or The Oracle, this **clarifies** what the chunk is about.
 
-*But how do we get these summaries and headers?*
+## 🔍 How Do We Generate Context?
 
-We ask an LLM to summarize the entire file by providing the first and last few chunks, since intros and conclusions usually carry the strongest contextual clues. Then, using this file summary as a guide, we have the LLM create a chunk-specific summary, ensuring the chunk is tied back to the broader topic. And finally, we extract the markdown headers and include the chunk's content. We put all the pieces together and store it in a separate database field called *full_context*.
+We **ask an LLM** to summarize the document using **key chunks**:
+1. **File Summary** -> Based on **intro & conclusion** (where the key context usually lives).
+2. **Chunk Summary** -> Tied back to the broader document.
+3. **Headers** -> Extracted from markdown.
 
-- **This *full_context* field is what we vectorize and embed.**
-- **The original chunk content (augmented by the headers) is what the database returns**
+We store everything in a **new database field**:
+- **The *full_context* field** -> This is what we **vectorize & embed**.
+- **The original chunk (with headers)** -> This is what the database **returns**.
 
-By embedding the chunk along with its broader context, we help the RAG system understand where the chunk fits within the bigger picture. Instead of treating it as an isolated sentence, it now knows it’s part of a document about The Matrix, and that this specific chunk focuses on the Oracle’s role.
+## 🎯 Why This Works
 
-By storing the *"full context"* in a separate database field, it allows us to:
-1. Check if the chunk we're processing is already in the database, so we don't have to ask an LLM to summarize it again.
-2. Return the original chunk content to keep the resulting prompt as small as possible.
+By embedding **context**, we **improve retrieval**:
+- ✅ The system knows what the chunk is about.
+- ✅ It retrieves fewer irrelevant chunks.
+- ✅ The LLM gets better context, reducing hallucinations.
 
-*Remember, this is not to benefit the LLM. This is to benefit the vector database and help it figure out where to put pieces of information, so the most relevant information can be returned.*
+This isn’t just useful for movie plots—it’s essential for legal documents, technical knowledge bases, and enterprise AI.
 
-This simple addition of context isn’t just useful for decoding movie plots. In real-world scenarios—like legal document retrieval or technical knowledge bases, this strategy drastically reduces irrelevant results and hallucinations, leading to more accurate and trustworthy responses.
+> A simple fix, but a *massive improvement*.
 
-## Solving the First Person Confusion
+## 📦 Why NOT Return the Context?
 
-This solution is quite simple, but a little bit hacky. I have a directory in my knowledge base with my first name. If the chunk processor is processing any file in this directory or any of its sub-directories, I add an additional prompt instructing the LLM to replace all instances of *I*, *me*, *my* with my actual full name and to make it **"abundantly clear that this chunk is about me"**. And then when my prompt gets sent to the vector database to retrieve relevant chunks, it's also augmented with my name by simply prepending it.
+The added context **only helps retrieval**, the LLM **doesn't need it**.
+
+To keep file processing **fast**, I use a **lighter LLM** to summarize chunks. It makes **plenty of mistakes**, but the **vector database doesn't care**. It still manages to correctly spot which chunks are most relevant.
+
+But if the LLM actually reads those mistakes? Now it's the one getting confused.
+
+### Smarter Retrieval, Cleaner Responses
+
+Instead of feeding the LLM **messy, error-prone summaries**, we:
+- ✅ **Only return the original chunk**, not the generated context
+- ✅ **Minimize token usage** and avoid wasting compute
+- ✅ **Speed up processing** by skipping unnecessary re-summarization
+
+This way, **retrieval gets smarter** without turning the response into a hallucinated disaster.
+
+# 🤦 Solving First-Person Confusion
+
+The fix for this is simple, but a little hacky.
+
+I keep a directory in my knowledge base with my first name. If the chunk processor detects a file from this directory (or any of its subdirectories), it **modifies the prompt** to ask the summarizing LLM:
+
+- It is explicitly instructed to **make it abundantly clear that this text is written by me.**
+- It replaces generic references like *I*, *me*, and *my* with my **full name** in the summary.
+
+Before querying the vector database, I **prepend my full name to the prompt.**
 
 > John Doe: What is my PB in the 5k?
 
-Sure, this isn’t the most elegant fix, but it works. And when it comes to RAG systems, simple and effective often beats complex and fragile. By swapping out first-person pronouns with my full name in personal files, the system can now differentiate between my achievements and that travel blog I saved about climbing Mount Fuji.
+Sure, it's not the most elegant fix, but it works. And in any system, **simple and effective beats complex and fragile**.
 
-## Setting it all up
+By clarifying authorship at the summarization stage, the system can finally **tell the difference** between my achievements and that travel blog I saved about climbing Mount Fuji.
 
-To set up this system locally, we need a few ingredients:
+# 🛠 Setting it all up
 
-- A database: *postgres*
-- An LLM interface: *ollama*
-- Some LLMs: *qwen2.5* / *deepseek-r1* / *llama3*
-- An embedder: *nomic-embed-text*
-- A way to interact with the LLM: *open-webui*
-- A vector database: *Supabase*
-- A RAG system: *darkrag* (my very own)
-- A way to bring it all together: *n8n*
+To set up this system locally, you need the following components:
 
-All of these components run in Docker containers. If you are new to Docker, I recommend checking out some beginner guides before proceeding.
+- **Database** -> *Postgres*
+- **LLM interface** -> *Ollama*
+- **LLMs** -> I recommend `qwen2.5` / `deepseek-r1` / `llama3`, whatever suits your needs and hardware
+- **Embedder** -> `nomic-embed-text`, or any embedding model you prefer
+- **UI for interaction** -> I recommend *open-webui*
+- **Vector database** -> *Supabase*
+- **RAG system** -> *darkrag* (my own)
+- **Automation** -> *n8n*, or any similar system of your preference
 
-All of my containers run on a custom Docker network called ai-network. This ensures they can communicate with each other without needing manual configuration.
+Everything runs in **Docker containers**. If you're new to Docker, check out some beginner guides before proceeding.
 
-For my system (Arch Linux), I created daemons in my `~/systemd/.config/systemd/user/` directory, but you can easily adapt for whatever system you're using, be it Windows, Mac, or a different Linux distribution. I opted for running the containers separately, instead of in a large `docker-compose` setup, so I can easily enable/disable different components if I need to free up some memory.
+I run my containers on a **custom Docker network** (`ai-network`) so they can communicate without manual configuration.
 
-### Setting up Ollama and downloading LLMs
+I run **Arch Linux**, so I created **systemd daemons** in `~/systemd/.config/systemd/user/`, but this setup is adaptable for *Windows*, *macOS*, and other *Linux* distributions. Instead of using a large `docker-compose` file, I **run containers separately** so I can enable/disable components as needed to free up memory.
 
-You can spin up `ollama` using this command:
+## 🚀 Setting up Ollama and downloading LLMs
+
+Run the following command to start **Ollama**:
 
 ```
 /usr/bin/docker run --rm \
@@ -165,20 +258,26 @@ You can spin up `ollama` using this command:
     ollama/ollama:latest
 ```
 
-Important to note that I created a volume named `ollama_models` and mapped it to `/root/.ollama/models` inside the container. This ensures that when we shut down the container, we don't have to re-download the models.
+> **Note:** the volume `ollama_models` is mapped to `/root/.ollama/models`, ensuring models persist even after shutting down the container.
 
-When **ollama** is running, run this command to go into the container:
+Once **Ollama** is running, enter the container:
 `docker exec -it ollama /bin/bash`
 
-Inside the container, run the `ollama pull` command to pull your desired language models. For this project, I recommend:
+Inside the container, pull the necessary models:
+
 ```
 ollama pull qwen2.5
 ollama pull nomic-embed-text
 ```
 
-Then run `exit` to go back to your local machine.
+Then exit back to your local machine:
+```
+exit
+```
 
-Personally, I run this docker container in this daemon that starts up automatically when I log into my machine:
+## [Optional] Running Ollama as a Daemon
+
+If you want **Ollama to start automatically** when you log in, create a **systemd service** or whatever the equivalent for your OS is:
 
 ```systemd
 ; systemd/.config/systemd/user/ollama.service
@@ -205,9 +304,15 @@ RestartSec=5
 WantedBy=default.target
 ```
 
-### Setting up Postgres
+Enable it with:
 
-Several of the components that we are setting up require a database. Spinning up a postgres container is pretty straight-forward. Here's the command to spin up a postgres instance on your machine using docker:
+```
+systemctl --user enable --now ollama
+```
+
+## 📦 Setting Up Postgres
+
+Run the following command to **start a Postgres container**:
 
 ```
 /usr/bin/docker run --rm \
@@ -221,16 +326,15 @@ Several of the components that we are setting up require a database. Spinning up
     postgres:16-alpine
 ```
 
-Just replace `user` and `password` with your desired postgres username and password.
+> Replace `user` and `password` with your desired credentials
 
-### Setting up Open-Webui
+## 🖥️ Setting Up Open-WebUI
 
-Open-webui is a popular web interface for interacting with your local language models. It looks and feels very similar to what you're used to with ChatGPT.
+Open-webui provides a **ChatGPT-like UI** for local models.
 
-<![TODO -->
 ![open-webui](open-webui.png)
 
-You can easily run it with this command:
+Start it with:
 
 ```
 /usr/bin/docker run --rm \
@@ -238,28 +342,36 @@ You can easily run it with this command:
     -e OLLAMA_BASE_URL=http://ollama:11434 \
     -e PORT=4080 \
     -p 4080:4080 \
-    -v /mnt/SnapIgnore/AI/ollama/conversations:/app/backend/data \
+    -v /path/to/your/conversations/on/your/machine:/app/backend/data \
     --name open-webui \
     ghcr.io/open-webui/open-webui:main
 ```
 
-I have a directory on my local machine, `/mnt/SnapIgnore/AI/ollama/conversations` where I store the conversation data, but this can be any directory on your local machine that you prefer.
+> **Note:** Replace `/path/to/your/conversations/on/your/machine` with the actual path on your local machine you want the database to live.
 
-You also need to set up a *"Function"* in open-webui to intercept your prompts and augment them with data from your knowledge base. In your browser, navigate to `http://localhost:4080`, then to `Settings > Admin Panel > Functions` and create a new function. Don't forget to enable the function by clicking on the 3 dots next to the function name, and enabling *Global* to enable the function for all your model conversations. Alternatively, you can enable the function separately for each model by going into the model settings.
+### Configuring Open-WebUI Functions
 
-Here's the function I use in my system:
+Navigate to `http://localhost:4080` and go to:
+
+`Settings > Admin Panel > Functions`
+
+- Create a **new function**
+- Enable it by clicking the **three dots > Enable Global**
+- Alternatively, enable it per model in `Model Settings`
+
+Use the following function script:
 
 [Open-Webui Webhook Function](https://github.com/DarkBones/darkrag/blob/main/open-webui-webhook-function-example.py)
 
-### Setting up Supabase
+## 🗄️ Setting Up Supabase
 
-Running **Supabase** locally and configuring it to work with this project is a bit more involved, but should be doable. You can follow their official guide here:
+Follow the official guide to [self-host Supabase with Docker](https://supabase.com/docs/guides/self-hosting/docker)
 
-[Self-hosting Supabase with Docker](https://supabase.com/docs/guides/self-hosting/docker)
-
-Once you have the `docker-compose` file for **Supabase**, you need to configure all the services in it to use our `ai-network` network so our other docker containers can see it. Here's my `docker-compose.yml` file for **Supabase**:
+Then, update your `docker-compose.yml` file to use the `ai-network`:
 
 [Supabase customized docker-compose](https://github.com/DarkBones/darkrag/blob/main/supabase-docker-compose-example.yml)
+
+## [Optional] Running Supabase as a Daemon
 
 For my own setup, I cloned the **Supabase** repository in my `~/Apps` directory and run it with this daemon:
 
@@ -282,13 +394,15 @@ RestartSec=5
 WantedBy=default.target
 ```
 
-Notice the line where it says `ExecStartPre=-/usr/bin/docker network create ai-network || true`. This ensures that the docker network `ai-network` is created. If you try to create a network that already exists, docker throws an error, so appending `|| true` ensures this is handled gracefully.
-
 #### Configuring Supabase
 
-Once you have **Supabase** set up and running, it's time to configure it. You can go to your **Supabase** instance by navigating to `http://localhost:8000` in your browser. It will ask you for your username and password, you can find these credentials in the `.env` file of the **Supabase** repository you downloaded.
+Go to:
 
-Then, go to *SQL editor* in the left navigation bar and run this command to create the `documents` table:
+`http://localhost:8000`
+
+Find your **username and password** in `.env` from the Supabase repo.
+
+In the *SQL editor*, run:
 
 ```sql
 CREATE SEQUENCE documents_id_seq;
@@ -303,9 +417,8 @@ CREATE TABLE documents (
     full_context TEXT DEFAULT 'placeholder'::text
 );
 ```
-You can set up several tables with different names, if you want to have multiple knowledge-bases. My *darkrag* tool supports having multiple tables.
 
-Aside from a table to store your embeddings in, you also need a way to query them by similarity. Run this command in the *SQL editor* to create the function to match embeddings by cosine similarity:
+To enable **vector search**, create a similarity function:
 
 ```sql
 create or replace function match_documents(
@@ -345,19 +458,17 @@ end;
 $$;
 ```
 
-That was... a lot... But your **Supabase** instance should be ready now. Let's move onto setting up *darkrag*.
+## 🛠 Setting up darkrag
 
-## Setting up darkrag
+By default, *darkrag* is designed for Markdown files because my knowledge base is mostly structured notes, documentation, and saved articles. However, if you work with other formats, like PDFs, plain text files, or even web pages, you can easily modify the file processing logic to support them.
 
-By default, *darkrag* is designed for Markdown files because my knowledge base is mostly structured notes, documentation, and saved articles. However, if you work with other formats—like PDFs, plain text files, or even web pages—you can easily modify the file processing logic to support them.
-
-I made the *darkrag* system as easy as possible to set up. First, run this command to pull the image:
+Pull the **darkrag** image:
 
 ```
 docker pull darkbones/darkrag:latest
 ```
 
-Then, create an `.env` file somewhere on your system (E.g. `~/Apps/darkrag/.env`) and open it with your favorite text editor. Here's an example `.env` file:
+Create an `.env` file (e.g., `~Apps/darkrag/.env`):
 
 ```sh
 # .env
@@ -398,11 +509,21 @@ docker run --rm \
 
 Just remember to replace `[path-to-your-env-file]` with the actual path to your `.env` file you created above. If you prefer, you can also provide the environment variables in the `docker-run` command directly if you prefer that over using an `.env` file.
 
-### Setting up n8n
+## 📡 Setting Up n8n for Workflow Automation
 
-Now that we have all the individual pieces of the puzzle, it's time to put everything together. If you're not familiar with *n8n*, it's a powerful, low-code workflow automation tool that allows you to connect various apps, services, and APIs to streamline processes and automate tasks efficiently.
+Now that we have all the individual pieces, it's time to **connect everything**.
 
-This is the command I run to spin it up:
+If you're unfamiliar with *n8n*, it's a **low-code automation tool** that helps integrate different services.
+
+We'll use it to:
+
+- **Monitor and update the knowledge base**
+- **Ensure vector embeddings stay fresh**
+- **Handle RAG queries dynamically**
+
+### Running n8n as a Docker Container
+
+Run the following command to start **n8n**:
 
 ```
 /usr/bin/docker run --rm \
@@ -424,6 +545,8 @@ This is the command I run to spin it up:
     n8nio/n8n:latest
 ```
 
+> **Note:** Replace `yourpassword`, `user`, and `password` with your preferred values.
+
 *Important components:*
 - `-v` maps a directory on your local machine (can be any directory you wish) to the `/home/knowledge` directory on *n8n*. This allows *n8n* to see the files in that directory so you can automatically update the knowledge base if you add or change any file in this directory.
 - `N8N_BASIC_AUTH_USER`: change this to your desired username for *n8n*
@@ -431,35 +554,53 @@ This is the command I run to spin it up:
 - `DB_POSTGRESDB_USER`: change this to the username you set up when setting up Postgres
 - `DB_POSTGRESDB_PASSWORD`: change this to the password you set up when setting up Postgres
 
-#### Configuring n8n
+#### Configuring n8n Credentials
 
-First, you need to configure some credentials to allow *n8n* to talk to your other services like *ollama* and *Supabase*. Setting them up is pretty easy. In your *n8n* dashboard (`http:localhost:5678`), got to the *Credentials* tab and click on *New Credential*. Select the credential you want to add from the drop-down and follow the steps.
+One **n8n** is running, go to:
+
+`http://localhost:5678`
+
+Navigate to:
+
+- **Settings > Credentials**
+- Click **New Credential**
+- Add credentials for **Ollama** and **Supabase**
 
 ![Ollama Credential](ollama-credential.png)
 
 ![Supabase Credential](supabase-credential.png)
 
-I have 3 workflows in *n8n*:
+## 🔄 Automating Knowledge Base Updates in n8n
 
-1. *Knowledge Base Updater*: Updates the database whenever I add, change, or delete a file in the knowledge base.
-2. *Knowledge Base Rebuilder*: Periodically runs through all the files in the knowledge base to make sure the vector database is up to date.
-3. *RAG Webhook*: Takes a user prompt, and returns the 5 most relevant chunks.
+We'll set up **three workflows**:
 
+1. *Knowledge Base Updater* -> Updates the database when files are added, changed, or deleted
+2. *Knowledge Base Rebuilder* -> Periodically ensures all documents are correctly embedded and up-to-date
+3. *RAG Webhook* -> Handles user queries by fetching relevant knowledge chunks
+
+<!-- TODO: Pick it up from here -->
 Let's set them up one-by-one.
 
-**Knowledge Base Updater**
+### 📂 Knowledge Base Updater
 
-This workflow has 2 sets of three nodes; one set for when a file is added or updated, another for when a file is deleted:
+This workflow monitors your knowledge base directory and triggers updates whenever files are **added**, **changed**, or **deleted**.
+
+It has **two sets of three nodes**:
+
+- **One set for file additions/updates**
+- **Another set for file deletions**
 
 ![Knowledge Base Updater Overview](knowledge-updater-1.png)
 
-The file updated entry node is configured like so:
+This node monitors your knowledge base directory:
 
 ![Knowledge Base Updater File Updated Node](knowledge-updater-2.png)
 
-Remembered how we mapped a directory on our local machine to `/home/knowledge` in `n8n`? We're using that here!
+Since we mapped our knowledge base directory to `/home/knowledge` in `n8n`, it listens for file changes inside that path.
 
-The code in the two `Code` nodes are identical:
+**Processing File Paths**
+
+The following **JavaScript node** ensures file paths are formatted correctly before passing them to *darkrag*:
 
 ```javascript
 const paths = [];
@@ -470,41 +611,51 @@ for (const item of $input.all()) {
 return { paths };
 ```
 
-It just removes *"/home/knowledge/"* from the start of the path, to match with what *darkrag* expects.
+It **removes** `/home/knowledge/` from the file path so *darkrag* recieves only the relative path.
 
-And the two *Http Request* nodes:
+**Sending Update & Delete Requests**
+
+Two **HTTP request nodes** send the processed file paths to *darkrag*:
 
 ![Knowledge Base Updater Update Request](knowledge-updater-3.png)
 
 ![Knowledge Base Updater Delete Request](knowledge-updater-4.png)
 
-**Knowledge Base Rebuilder**
+### 📋 Knowledge Base Rebuilder
 
-This runs once a week to make doubly sure all the knowledge in the database is up to date.
+This runs **once a week** to ensure all knowledge is correctly embedded and up to date.
 
 ![Knowledge Base Rebuilder](rebuilder-1.png)
 
-First, it deletes files from the database that are no longer present in the knowledge base.
+**Step 1: Remove Stale Entries**
+
+It first **deletes database entries** for files that no longer exist:
 
 ![Knowledge Base Rebuilder Clean Database](rebuilder-2.png)
 
-Then, it processes all files in the knowledge base to make sure all the information in the knowledge base is also in the database.
+**Step 2: Reprocess Existing Files**
+
+Then, it reprocesses all files to make sure embeddings are **up-to-date**:
 
 ![Knowledge Base Rebuilder Process All](rebuilder-3.png)
 
-**RAG Webhook**
+### 🖥️ RAG Webhook
 
-Finally, we configure our actual webhook. It's another pretty simple *n8n* workflow:
+This workflow enables **live RAG queries** by fetching the most relevant knowledge chunks from *Supabase*.
 
 ![RAG Webhook Overview](webhook-1.png)
 
-It contains only a couple of nodes. Here's the configuration for **Supabase**:
+**Fetching Knowledge from Supabase**
 
 ![RAG Webhook Supabase](webhook-2.png)
 
+**Querying Ollama to Vectorize the Original Promp**
+
 ![RAG Webhook Ollama](webhook-3.png)
 
-And the code inside the *Code* node that extracts the knowledge and prepares the request to **darkrag**:
+**Preparing the Retrieved Knowledge**
+
+The **JavaScript node** formats retrieved content from *darkrag* into a structured response:
 
 ```javascript
 const knowledge = [];
@@ -521,31 +672,50 @@ for (const item of $input.all()) {
 return { knowledge }
 ```
 
-And as a final step, return what *darkrag* responds with:
+**Final Response Processing**
+
+The formatted *darkrag* response is then **returned** to the requester:
 
 ![RAG Webhook Respond](webhook-4.png)
 
-## Conclusion
+# 📌 Conclusion
 
-That's it! Those are all the ingredients to set up your own 100% local, 100% free *RAG System*. Now when you interact with your favorite model in *open-webui* the following happens:
+That's it! You now have a **fully functional, self-updating RAG system**, completely local and free to use.
 
-1. The *open-webui* function intercepts your message and sends it to the webhook in *n8n*
-2. *n8n* sends your input to *Supabase*
-3. *Supabase* responds with the 5 most relevant chunks
-4. The *open-webui* function adds those chunks as context
-5. The LLM responds more accurately to your input
+## How It Works in Action
 
-And when you add, change, or delete a document from your knowledge base:
+✅ **When you query the model:**
 
-1. *n8n* sends the file path to *darkrag*
-2. *darkrag* adds more context by summarizing the chunks, and stores the embeddings of contextualized version, along with the original data, on *Supabase*
+1. *Open-WebUI* intercepts your prompt and sends it to *n8n*.
+2. *n8n* queries *Supabase* for relevant chunks.
+3. *Supabase* returns the **top 5 most relevant chunks**.
+4. *Open-WebUI* injects those chunks into your prompt.
+5. The *LLM* **responds with better accuracy**.
+
+✅ **When you add, change, or delete documents:**
+
+1. *n8n* detects the change and notifies *darkrag*.
+2. *darkrag* generates new **context-aware embeddings**.
+3. The updated embeddings are stored in *Supabase*.
+
+## Final Thoughts
 
 **"Does *darkrag* this solve all problems with RAG?"**
 
-No, **darkrag** is not a silver bullet. It won’t reliably answer questions like *“What happened last week?”* or *“Rank my achievements by impressiveness.”* Instead, it’s a foundation for *better chunking and embedding*, ensuring retrieved chunks retain the context of their source documents.  
+No, *darkrag* is not a silver bullet. It won’t reliably answer questions like *“What happened last week?”* or *“Rank my achievements by impressiveness.”* Instead, it’s a foundation for *better chunking and embedding*, ensuring retrieved chunks **retain the context of their source documents**.  
 
-Think of **darkrag** as a *starting block* for building more advanced RAG agents, not a complete solution. You can take the basic *n8n* setup from this article and extend it into a truly agentic RAG system.
+Think of *darkrag* as a **foundation** for building more advanced RAG agents, not a complete solution.
 
-You can extend darkrag to fit your needs. The source code is available on GitHub:
+---
 
-https://github.com/DarkBones/darkrag
+## 🔗 Source Code & Updates
+
+**[GitHub: darkrag](https://github.com/DarkBones/darkrag)**
+
+---
+
+## What's Next?
+
+- Extend **n8n automation** for real-time knowledge updates.
+- Improve **chunking & embedding strategies**.
+- Add and configure **AI agents**.

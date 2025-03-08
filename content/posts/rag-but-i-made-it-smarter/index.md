@@ -26,7 +26,7 @@ draft = true
 RAG pulls in **irrelevant chunks**, **mashes together unrelated ideas**, and **confidently misattributes first-person writing**, turning useful context into a confusing mess.
 
 # How to Make RAG Smarter
-
+other interesting
 I ran into two major issues when building my own RAG system:
 - 🧩 **Context Blindness** – When retrieved chunks don’t carry enough information to be useful.
 - 🤦 **First-Person Confusion** – When the system doesn’t know who "I" refers to.
@@ -39,7 +39,7 @@ By the end, you'll have a **100% local, 100% free, context-aware RAG pipeline** 
 
 Enjoying this deep-dive? Here's how you can help:
 - 👏 **Clap for this article** – It helps more people find it.
-- 🔔 **Follow me** – I write about AI, programming, data science, and cool tech. More posts like this are coming!
+- 🔔 **Follow me** – I write about AI, programming, data science, and other interesting tech. More posts like this are coming!
 - 💬 **Leave a comment** – Have you struggled with RAG? Found a better way to chunk data? Let's talk!
 
 # 🧩 RAG Problem #1: Context Blindness
@@ -98,7 +98,7 @@ Now, let's feed this context to an **LLM** and see what it generates.
 
 ---
 
--- A fantasy-style wizard in a green robe and pointed hat holds a glowing green CRT monitor over a volcanic chasm, with molten lava and fire in the background. The wizard’s long hair flows as they extend the monitor dramatically, evoking a ritualistic or sacrificial gesture. The eerie green light from the screen contrasts with the fiery orange glow of the lava, creating a mystical and surreal atmosphere.](wizard-throwing-computer-in-volcano.png)
+![A fantasy-style wizard in a green robe and pointed hat holds a glowing green CRT monitor over a volcanic chasm, with molten lava and fire in the background. The wizard’s long hair flows as they extend the monitor dramatically, evoking a ritualistic or sacrificial gesture. The eerie green light from the screen contrasts with the fiery orange glow of the lava, creating a mystical and surreal atmosphere.](wizard-throwing-computer-in-volcano.png)
 
 ## What Went Wrong?
 
@@ -328,7 +328,7 @@ Replace `user` and `password` with your desired credentials
 
 Open-webui provides a **ChatGPT-like UI** for local models.
 
--- open-webui](open-webui.png)
+![A screenshot of the Open WebUI interface running the qwen2.5:7b model. The UI has a dark theme, displaying a central chat prompt with options for "Web Search" and "Code Interpreter." On the left sidebar, there are sections labeled "Workspace" and "Chats." The browser address bar shows "Not Secure" with a local URL. The top right corner displays user profile settings.](open-webui.png)
 
 Start it with:
 
@@ -562,9 +562,9 @@ Navigate to:
 - Click **New Credential**
 - Add credentials for **Ollama** and **Supabase**
 
--- Ollama Credential](ollama-credential.png)
+![A screenshot of the n8n interface showing the setup of an Ollama credential. The credential configuration window displays a successful connection message in green, with the base URL set to "http://ollama:11434". A "Retry" button is visible, along with a prompt to open documentation for help. The background shows the n8n workspace with sidebar options like "Templates," "Variables," and "Help.](ollama-credential.png)
 
--- Supabase Credential](supabase-credential.png)
+![A screenshot of the n8n interface showing the setup of an Supabase credential. The credential configuration window displays a successful connection message in green, with the base URL set to "http://kong:8000". A "Retry" button is visible, along with a prompt to open documentation for help. The background shows the n8n workspace with sidebar options like "Templates," "Variables," and "Help.](supabase-credential.png)
 
 ## 🔄 Automating Knowledge Base Updates in n8n
 
@@ -585,11 +585,11 @@ It has **two sets of three nodes**:
 - **One set for file additions/updates**
 - **Another set for file deletions**
 
--- Knowledge Base Updater Overview](knowledge-updater-1.png)
+![A screenshot of the n8n workflow editor displaying a "Knowledge Base Updater" automation. The workflow consists of two parallel processes: one triggered by a "File Updated" event and the other by a "File Deleted" event, both monitoring the "/home/knowledge" directory. Each trigger is connected to a code processing node, followed by an HTTP request node that interacts with a RAG system at "http://darkrag:8004".](knowledge-updater-1.png)
 
 This node monitors your knowledge base directory:
 
--- Knowledge Base Updater File Updated Node](knowledge-updater-2.png)
+![A screenshot of the n8n workflow editor displaying the configuration of a "File Updated" node. The node is set to trigger on "Changes Involving a Specific Folder," monitoring the directory "/home/knowledge" for "File Added" and "File Changed" events. The right panel shows available settings, including an option to add additional properties. A "Test Step" button is visible for manually testing the trigger.](knowledge-updater-2.png)
 
 Since we mapped our knowledge base directory to `/home/knowledge` in `n8n`, it listens for file changes inside that path.
 
@@ -612,41 +612,41 @@ It **removes** `/home/knowledge/` from the file path so *darkrag* recieves only 
 
 Two **HTTP request nodes** send the processed file paths to *darkrag*:
 
--- Knowledge Base Updater Update Request](knowledge-updater-3.png)
+![A screenshot of the n8n workflow editor showing the configuration of an "HTTP Request" node. The request is set to the POST method with the URL "http://darkrag:8004/store/process_files" to send file update data to Darkrag. Authentication is set to "None," and the request body is enabled, formatted as JSON. The "Body Parameters" section includes a parameter named "file_paths" with a dynamic value "{{ $json.paths }}". Options for additional parameters and headers are available.](knowledge-updater-3.png)
 
--- Knowledge Base Updater Delete Request](knowledge-updater-4.png)
+![A screenshot of the n8n workflow editor showing an "HTTP Request" node for deleting files from Darkrag. The request uses the POST method to "http://darkrag:8004/store/delete_files" with JSON body parameters. The parameter "file_paths" is dynamically set to "{{ $json.paths }}". Authentication is disabled, and headers are disabled. A "Test Step" button is available for manual execution, and no input data is currently present.](knowledge-updater-4.png)
 
 ### 📋 Knowledge Base Rebuilder
 
 This runs **once a week** to ensure all knowledge is correctly embedded and up to date.
 
--- Knowledge Base Rebuilder](rebuilder-1.png)
+![A screenshot of the n8n workflow editor displaying the "Knowledge Base Rebuilder" automation. The flow starts with a "Schedule Trigger" node, followed by two "HTTP Request" nodes that interact with Darkrag. The first request clears outdated files, and the second processes the updated knowledge base. The workflow is marked as "Active," with options to edit, view executions, and share. The left sidebar includes navigation options like "Templates," "Variables," and "Help."](rebuilder-1.png)
 
 **Step 1: Remove Stale Entries**
 
 It first **deletes database entries** for files that no longer exist:
 
--- Knowledge Base Rebuilder Clean Database](rebuilder-2.png)
+![A screenshot of the n8n workflow editor showing an "HTTP Request" node configured to clean the Darkrag database. The request uses the POST method to "http://darkrag:8004/store/clean_database" without authentication. JSON is selected as the body content type, but no body parameters are specified. A "Test Step" button is available for manual execution.](rebuilder-2.png)
 
 **Step 2: Reprocess Existing Files**
 
 Then, it reprocesses all files to make sure embeddings are **up-to-date**:
 
--- Knowledge Base Rebuilder Process All](rebuilder-3.png)
+![A screenshot of an n8n "HTTP Request" node configured to trigger the reprocessing of all files in Darkrag. The request method is POST, targeting "http://darkrag:8004/store/process_all" with no authentication. JSON is selected as the body content type, and a timeout of 900,000 milliseconds is set.](rebuilder-3.png)
 
 ### 🖥️ RAG Webhook
 
 This workflow enables **live RAG queries** by fetching the most relevant knowledge chunks from *Supabase*.
 
--- RAG Webhook Overview](webhook-1.png)
+![A screenshot of an n8n workflow titled "RAG Webhook." The workflow starts with a Webhook node, sending input to a "Supabase Vector Store" node that retrieves embeddings with Ollama. The extracted content is processed by a code node before being sent as a response via the "Respond to Webhook" node. The workflow is active, with the toggle switch turned on.](webhook-1.png)
 
 **Fetching Knowledge from Supabase**
 
--- RAG Webhook Supabase](webhook-2.png)
+![A screenshot of the "Supabase Vector Store" node in an n8n workflow, configured to retrieve relevant knowledge from the "documents" table. The query prompt dynamically extracts input using {{$json.body.prompt}}, and the system retrieves the top 5 matching results while including metadata. The query function used is "match_documents."](webhook-2.png)
 
 **Querying Ollama to Vectorize the Original Promp**
 
--- RAG Webhook Ollama](webhook-3.png)
+![A screenshot of the "Embeddings Ollama" node in an n8n workflow, configured to generate vector embeddings for queries. The node is set to connect with an Ollama account and uses the "nomic-embed-text:latest" model to transform input text into embeddings for retrieval-augmented generation (RAG).](webhook-3.png)
 
 **Preparing the Retrieved Knowledge**
 
@@ -671,7 +671,7 @@ return { knowledge }
 
 The formatted *darkrag* response is then **returned** to the requester:
 
--- RAG Webhook Respond](webhook-4.png)
+![A screenshot of the "Respond to Webhook" node in an n8n workflow, configured to return the retrieved knowledge from darkrag. The node responds with JSON, using the {{$json.knowledge}} expression to send the retrieved data back to the requester.](webhook-4.png)
 
 # 📌 Conclusion
 

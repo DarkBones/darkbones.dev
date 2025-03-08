@@ -1,22 +1,19 @@
 +++
-title = "You're Doing RAG Wrong"
+title = "You're Doing RAG Wrong: How to Fix Retrieval-Augmented Generation for Local LLMs"
 date = "2025-02-25T16:55:55+01:00"
 author = "DarkBones"
 authorTwitter = "" #do not include @
 cover = ""
-tags = ["AI", "machine learning", "LLMs", "retrieval", "self-hosting", "RAG"]
-keywords = ["Retrieval-Augmented Generation", "RAG", "local AI", "vector databases", "context-aware AI"]
-description = "A deep dive into the problems of RAG, how I made my own system context-aware, and a step-by-step guide to setting it up locally."
+tags = ["AI", "machine learning", "LLMs", "retrieval", "self-hosting", "RAG", "vector databases", "local AI", "context-aware AI", "RAG troubleshooting", "RAG setup", "RAG optimization"]
+keywords = ["Retrieval-Augmented Generation", "RAG", "local AI", "vector databases", "context-aware AI", "RAG troubleshooting", "fix RAG issues", "improve RAG retrieval", "self-hosted RAG", "context blindness RAG", "first-person confusion RAG", "RAG setup tutorial", "local LLM RAG", "Ollama RAG"]
+description = "Struggling with Retrieval-Augmented Generation (RAG)? Learn how to fix context blindness, first-person confusion, and optimize retrieval for local LLMs. Step-by-step guide with open-source tools."
 showFullContent = false
 readingTime = true
 hideComments = true
 draft = true
 +++
 
-<!-- TODO: Make the links work for Medium -->
-# You’re Doing RAG Wrong
-
-> How To Set Up RAG Locally and Avoid Common Issues
+> How To Set Up RAG Locally, Avoid Common Issues, and Improve RAG Retrieval Accuracy.
 
 ✔️ **Want to skip straight to the setup? [Jump to the tutorial](#setting-it-all-up).**
 
@@ -36,7 +33,7 @@ I ran into two major issues when building my own RAG system:
 
 I'll show you exactly how I **fixed these problems**, so your RAG system actually understands what it retrieves.
 
-By the end, you'll have a **100% local, 100% free, context-aware RAG system** running with your preferred LLM and interface. We'll also set up an **automated knowledge base**, so adding new information is *frictionless*.
+By the end, you'll have a **100% local, 100% free, context-aware RAG pipeline** running with your preferred local LLM and interface. We'll also set up an **automated knowledge base**, so adding new information is *frictionless*.
 
 # Before we get started...
 
@@ -101,7 +98,7 @@ Now, let's feed this context to an **LLM** and see what it generates.
 
 ---
 
-![A fantasy-style wizard in a green robe and pointed hat holds a glowing green CRT monitor over a volcanic chasm, with molten lava and fire in the background. The wizard’s long hair flows as they extend the monitor dramatically, evoking a ritualistic or sacrificial gesture. The eerie green light from the screen contrasts with the fiery orange glow of the lava, creating a mystical and surreal atmosphere.](wizard-throwing-computer-in-volcano.png)
+-- A fantasy-style wizard in a green robe and pointed hat holds a glowing green CRT monitor over a volcanic chasm, with molten lava and fire in the background. The wizard’s long hair flows as they extend the monitor dramatically, evoking a ritualistic or sacrificial gesture. The eerie green light from the screen contrasts with the fiery orange glow of the lava, creating a mystical and surreal atmosphere.](wizard-throwing-computer-in-volcano.png)
 
 ## What Went Wrong?
 
@@ -137,7 +134,6 @@ Obviously, it's the former, but a vector database has no way of knowing that.
 
 # 🛠️ Solving Context Blindness with Context-Aware Chunks
 
-<!-- It's clear that storing individual chunks isn't going to cut it. Take a random chunk out of even a medium-sized document, and it's hard even for us humans to understand what the context is. So we need to make each chunk *context aware*. -->
 Storing **raw chunks** isn't enough. Even humans struggle to understand isolated sentences without context, so why would a vector database do any better?
 
 > We need to make each chunk **context aware**.
@@ -230,8 +226,8 @@ By clarifying authorship at the summarization stage, the system can finally **te
 
 To set up this system locally, you need the following components:
 
-- **Database** -> *Postgres*
-- **LLM interface** -> *Ollama*
+- **Database** -> *PostgreSQL*
+- **Local LLM interface** -> *Ollama*
 - **LLMs** -> I recommend `qwen2.5` / `deepseek-r1` / `llama3`, whatever suits your needs and hardware
 - **Embedder** -> `nomic-embed-text`, or any embedding model you prefer
 - **UI for interaction** -> I recommend *open-webui*
@@ -310,9 +306,9 @@ Enable it with:
 systemctl --user enable --now ollama
 ```
 
-## 📦 Setting Up Postgres
+## 📦 Setting Up PostgreSQL
 
-Run the following command to **start a Postgres container**:
+Run the following command to **start a PostgreSQL container**:
 
 ```
 /usr/bin/docker run --rm \
@@ -326,13 +322,13 @@ Run the following command to **start a Postgres container**:
     postgres:16-alpine
 ```
 
-> Replace `user` and `password` with your desired credentials
+Replace `user` and `password` with your desired credentials
 
 ## 🖥️ Setting Up Open-WebUI
 
 Open-webui provides a **ChatGPT-like UI** for local models.
 
-![open-webui](open-webui.png)
+-- open-webui](open-webui.png)
 
 Start it with:
 
@@ -551,8 +547,8 @@ Run the following command to start **n8n**:
 - `-v` maps a directory on your local machine (can be any directory you wish) to the `/home/knowledge` directory on *n8n*. This allows *n8n* to see the files in that directory so you can automatically update the knowledge base if you add or change any file in this directory.
 - `N8N_BASIC_AUTH_USER`: change this to your desired username for *n8n*
 - `N8N_BASIC_AUTH_PASSWORD`: change this to your desired password for *n8n*
-- `DB_POSTGRESDB_USER`: change this to the username you set up when setting up Postgres
-- `DB_POSTGRESDB_PASSWORD`: change this to the password you set up when setting up Postgres
+- `DB_POSTGRESDB_USER`: change this to the username you set up when setting up PostgreSQL
+- `DB_POSTGRESDB_PASSWORD`: change this to the password you set up when setting up PostgreSQL
 
 #### Configuring n8n Credentials
 
@@ -566,9 +562,9 @@ Navigate to:
 - Click **New Credential**
 - Add credentials for **Ollama** and **Supabase**
 
-![Ollama Credential](ollama-credential.png)
+-- Ollama Credential](ollama-credential.png)
 
-![Supabase Credential](supabase-credential.png)
+-- Supabase Credential](supabase-credential.png)
 
 ## 🔄 Automating Knowledge Base Updates in n8n
 
@@ -578,7 +574,6 @@ We'll set up **three workflows**:
 2. *Knowledge Base Rebuilder* -> Periodically ensures all documents are correctly embedded and up-to-date
 3. *RAG Webhook* -> Handles user queries by fetching relevant knowledge chunks
 
-<!-- TODO: Pick it up from here -->
 Let's set them up one-by-one.
 
 ### 📂 Knowledge Base Updater
@@ -590,11 +585,11 @@ It has **two sets of three nodes**:
 - **One set for file additions/updates**
 - **Another set for file deletions**
 
-![Knowledge Base Updater Overview](knowledge-updater-1.png)
+-- Knowledge Base Updater Overview](knowledge-updater-1.png)
 
 This node monitors your knowledge base directory:
 
-![Knowledge Base Updater File Updated Node](knowledge-updater-2.png)
+-- Knowledge Base Updater File Updated Node](knowledge-updater-2.png)
 
 Since we mapped our knowledge base directory to `/home/knowledge` in `n8n`, it listens for file changes inside that path.
 
@@ -617,41 +612,41 @@ It **removes** `/home/knowledge/` from the file path so *darkrag* recieves only 
 
 Two **HTTP request nodes** send the processed file paths to *darkrag*:
 
-![Knowledge Base Updater Update Request](knowledge-updater-3.png)
+-- Knowledge Base Updater Update Request](knowledge-updater-3.png)
 
-![Knowledge Base Updater Delete Request](knowledge-updater-4.png)
+-- Knowledge Base Updater Delete Request](knowledge-updater-4.png)
 
 ### 📋 Knowledge Base Rebuilder
 
 This runs **once a week** to ensure all knowledge is correctly embedded and up to date.
 
-![Knowledge Base Rebuilder](rebuilder-1.png)
+-- Knowledge Base Rebuilder](rebuilder-1.png)
 
 **Step 1: Remove Stale Entries**
 
 It first **deletes database entries** for files that no longer exist:
 
-![Knowledge Base Rebuilder Clean Database](rebuilder-2.png)
+-- Knowledge Base Rebuilder Clean Database](rebuilder-2.png)
 
 **Step 2: Reprocess Existing Files**
 
 Then, it reprocesses all files to make sure embeddings are **up-to-date**:
 
-![Knowledge Base Rebuilder Process All](rebuilder-3.png)
+-- Knowledge Base Rebuilder Process All](rebuilder-3.png)
 
 ### 🖥️ RAG Webhook
 
 This workflow enables **live RAG queries** by fetching the most relevant knowledge chunks from *Supabase*.
 
-![RAG Webhook Overview](webhook-1.png)
+-- RAG Webhook Overview](webhook-1.png)
 
 **Fetching Knowledge from Supabase**
 
-![RAG Webhook Supabase](webhook-2.png)
+-- RAG Webhook Supabase](webhook-2.png)
 
 **Querying Ollama to Vectorize the Original Promp**
 
-![RAG Webhook Ollama](webhook-3.png)
+-- RAG Webhook Ollama](webhook-3.png)
 
 **Preparing the Retrieved Knowledge**
 
@@ -676,11 +671,11 @@ return { knowledge }
 
 The formatted *darkrag* response is then **returned** to the requester:
 
-![RAG Webhook Respond](webhook-4.png)
+-- RAG Webhook Respond](webhook-4.png)
 
 # 📌 Conclusion
 
-That's it! You now have a **fully functional, self-updating RAG system**, completely local and free to use.
+That's it! You now have a **fully functional, self-updating RAG pipeline**, completely local and free to use.
 
 ## How It Works in Action
 
@@ -700,7 +695,7 @@ That's it! You now have a **fully functional, self-updating RAG system**, comple
 
 ## Final Thoughts
 
-**"Does *darkrag* this solve all problems with RAG?"**
+> **"Does *darkrag* this solve all problems with RAG?"**
 
 No, *darkrag* is not a silver bullet. It won’t reliably answer questions like *“What happened last week?”* or *“Rank my achievements by impressiveness.”* Instead, it’s a foundation for *better chunking and embedding*, ensuring retrieved chunks **retain the context of their source documents**.  
 

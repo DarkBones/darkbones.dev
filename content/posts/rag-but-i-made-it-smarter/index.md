@@ -701,6 +701,8 @@ No, *darkrag* is not a silver bullet. It won’t reliably answer questions like 
 
 Think of *darkrag* as a **foundation** for building more advanced RAG agents, not a complete solution.
 
+By focusing on smarter chunking, metadata-rich embeddings, and automation, this setup significantly improves retrieval accuracy *without requiring external APIs or cloud solutions*.
+
 ---
 
 ## 🔗 Source Code & Updates

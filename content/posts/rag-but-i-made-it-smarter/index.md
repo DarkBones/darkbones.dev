@@ -644,7 +644,7 @@ This workflow enables **live RAG queries** by fetching the most relevant knowled
 
 ![A screenshot of the "Supabase Vector Store" node in an n8n workflow, configured to retrieve relevant knowledge from the "documents" table. The query prompt dynamically extracts input using {{$json.body.prompt}}, and the system retrieves the top 5 matching results while including metadata. The query function used is "match_documents."](webhook-2.png)
 
-**Querying Ollama to Vectorize the Original Promp**
+**Querying Ollama to Vectorize the Original Prompt**
 
 ![A screenshot of the "Embeddings Ollama" node in an n8n workflow, configured to generate vector embeddings for queries. The node is set to connect with an Ollama account and uses the "nomic-embed-text:latest" model to transform input text into embeddings for retrieval-augmented generation (RAG).](webhook-3.png)
 

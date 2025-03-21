@@ -693,6 +693,8 @@ That's it! You now have a **fully functional, self-updating RAG pipeline**, comp
 2. *darkrag* generates new **context-aware embeddings**.
 3. The updated embeddings are stored in *Supabase*.
 
+![A screenshot of Open-WebUI showing a conversation with the qwen2.5:7b model. The user asks, "Who or what was the Oracle in The Matrix?" The model responds with an accurate explanation, describing the Oracle as a program in the Matrix that guides Neo, was created by the machines to study human behavior, and is known for her cryptic but insightful advice. The interface has a dark theme, with the chat conversation displayed in the center and a sidebar on the left showing chat history.](accurate-output.png)
+
 ## Final Thoughts
 
 > **"Does *darkrag* this solve all problems with RAG?"**

@@ -55,3 +55,5 @@ Imagine the most senior engineer you know, someone you actually look up to, comi
 I went on a solo trip to Marseille to improve my French. I comitted to speaking only French during the trip. Every time I left my hotel room, I said to myself "Time to go looking like an idiot" and forced myself to be okay with that.
 
 My first dev manager told me: It's my job to make you a better developer. I now think it's MY job to make me a better developer. It's my manager's job to show me the way. But then I outgrew my managers. So what's their job now?
+
+Sometimes you think you look very smart by thinking outside the box, only for your PR reviewer to 'well-akshually' you. It's not all bad. Sometimes you get to be that reviewer.

@@ -1,5 +1,5 @@
 +++
-title = "I Banned Random Numbers from My Game. Here's What Happened."
+title = "I Banned Random Numbers from My Game. It Turned Out Beautiful."
 date = "2025-03-29T11:30:55+01:00"
 author = "DarkBones"
 cover = ""
@@ -14,7 +14,7 @@ draft = true
 
 # Deterministic Randomness
 
-Most players don’t care if your randomness is truly random. They care about variety, surprise, and consistency. Turns out, you can fake all three without calling `random()` once.
+In most games, randomness just needs to *feel* right. Players don’t care if it’s truly random. They care about variety, surprise, and consistency. Turns out, you can fake all three without calling `random()` once.
 
 For the past week and a half, I've been working on a small Android game. It revolves around a satirical social media app the player uses to get into politics, and eventually take over the world. While designing it, I gave myself one unbreakable rule:
 
@@ -277,13 +277,13 @@ self.str = string_to_float(self.name + "_strength", 0, 1)
 
 Want them to add up to something sensible (like `1.0`)? No problem, just normalize or scale as needed.
 
-## Getting Our Shuffle On
+## Doing the Fisher-Yates Shuffle
 
 This next part is what made me stop coding and start writing. It's so clean, so chaotic, and so beautifully deterministic that I had to share it.
 
 In my game, players interact with a fake social media site. NPCs are constantly posting all sorts of nonsense in a timeline. I wrote a *long* list of prewritten posts for NPCs to share.
 
-> But I don't want them seeing the same post twice until they've seen *all* of them.
+> I don’t want them seeing the same post twice until they’ve cycled through *all* of them.
 
 That means I need to pick a random-looking post from the list, without repeats, all while keeping things deterministic. No savings which ones have been posted. No RNG. But still random-feeling.
 
@@ -295,7 +295,7 @@ Let's build it.
 
 We'll start here: With a boringly sorted list.
 
-<!-- TODO: Image of list of numbers 1 to 5 in sorted order -->
+![A horizontal row of five boxes labeled 0 through 4 in order, connected by right-pointing arrows. This represents an initial, unshuffled list used in the deterministic Fisher-Yates algorithm.](1-boring-list.png)
 
 Nothing special. Just five integers in order. Not very random, not very fun.
 
@@ -320,22 +320,110 @@ seed = f"DarkBones_{i * 16777619}_x_seeded_random"
 That long, weird-looking seed is doing a few important things:
 
 - `DarkBones` - This is the player's username. It ensures that the result is unique per player.
-- `i * 16777619` - Instead of just using `i`, we multiply it by a big prime number. (the same as the FNV-1a algorithm.)
+- `i * 16777619` - Instead of just using `i`, we multiply it by a big prime number, the same as the FNV-1a algorithm, to reduce patterns and increase entropy.
 - `_x_seeded_random` - This is just static noise. It makes the input string longer and less predictable, creating more entropy.
 
 Using `f"DarkBones_{i}"` also would have worked, but the resulting floats were not "random" enough for my liking.
 
-The list ends up looking like this:
+![A row of five boxes labeled 0 to 4, each connected by arrows. Below each box is a green rectangle showing a deterministic float value: 0.7050, 0.1573, 0.1460, 0.9022, and 0.1193. These values simulate randomness in a deterministic shuffle.](2-with-floats.png)
 
-<!-- TODO: Image of same list of numbers, this time with their deterministic floats -->
+## 3. Shuffle Without Random
 
-## 3. Sorting The List
+At this point, you might think *"Okay, let's just assign each item a random number and sort the list by it."*
 
-We have:
+That would work, but it's **not** what I'm doing here.
 
-1. A list ordered by its values
-2. A "random" number associated with each item
+Instead, I implemented a version of the **Fisher-Yates shuffle**, a classic algorithm (predating computers) for shuffling lists in-place. The twist is that I'm using my `string_to_float()` function to make it **deterministic**.
 
-All we have to do now is... sort the list by the "random" number:
+## Line-by-Line: Fisher-Yates
 
-<!-- TODO: Image of lists side by side, right side ordered by the random float -->
+```
+p = list(range(n))
+```
+
+We start with a boring ordered list: `[0, 1, 2, 3, 4]`.
+
+```
+for i in range(n - 1, 0, -1):
+```
+
+Fisher-Yates works *backward*. For each position `i`, we'll pick a position `j <= i` and swap `i` with `j`.
+
+```
+    step_seed = f"{perm_seed}_{i * 16777619}_x_seeded_random"
+```
+
+This generates a unique string seed for this step in the shuffle. A few design notes:
+
+* `perm_seed` is the player's username (or any unique identifier).
+* `i * 16777619` ensures the seed is different per step, and the prime multiplier helps scramble the bits.
+* The rest if just noisy padding to increase entropy.
+
+```
+    j_float = string_to_float(step_seed, 0.0, float(i + 1))
+    j = int(j_float)
+    j = max(0, min(j, i))  # clamp
+```
+
+We use the seed to generate a float in `[0, i+1]`, convert it into an integer, and clamp it to make sure it's valid.
+
+This gives us a deterministic "random" index `j` to swap with `i`.
+
+```
+    p[i], p[j] = p[j], p[i]
+```
+
+All that's left to do is swap the two indexes, and we have completed one cycle of the loop. We do this for all values of `i` and we end up with a **fully shuffled permutation**, no repeats, no randomness, and totally determined by the seed.
+
+### Putting it all together
+
+Here's the complete Fisher-Yates permutation generator for python:
+
+```
+def generate_permutation(perm_seed: str, n: int, string_to_float) -> list[int]:
+    assert n > 0, "n must be positive"
+
+    # Start with a sorted list
+    p = list(range(n))
+
+    # Fisher-Yates shuffle, seeded deterministically
+    for i in range(n - 1, 0, -1):
+        step_seed = f"{perm_seed}_{i * 16777619}_x_seeded_random"
+
+        j_float = string_to_float(step_seed, 0.0, float(i + 1))
+        j = int(j_float)
+        j = max(0, min(j, i))  # clamp j between 0 and i
+
+        # Swap elements at positions i and j
+        p[i], p[j] = p[j], p[i]
+
+    return p
+```
+![Round 1 of the Fisher-Yates shuffle. On the left, items 0 to 4 are shown with their deterministic float values. An arrow shows that item 0 (with value 0.7050) is swapped with item 4. The right side shows the updated order after the swap, with floats preserved.](3-round-1.png)
+
+![Round 2 of the deterministic Fisher-Yates shuffle. The left side shows the current list order and float values. An arrow indicates that item 3 is selected and swapped with itself, leaving the list unchanged. The right side shows the same order as before the swap.](4-round-2.png)
+
+![Round 3 of the deterministic Fisher-Yates shuffle. The left side shows the current list with float values. An arrow indicates that item 2 (with value 0.1460) is swapped with item 4. The right side displays the updated order after the swap, preserving all float values.](5-round-3.png)
+
+![Round 4 of the deterministic Fisher-Yates shuffle. On the left, item 1 (with float 0.1573) is swapped with item 2 (0.7050). The right side shows the updated list order after the swap, with all float values maintained.](6-round-4.png)
+
+## Why This Is Better Than Sorting By a Hash
+
+Sorting items by a "random" float is fine when you're okay with static shuffles. But if you want a **real shuffle** (on that *feels* random and obeys the statistical properties of a uniform distribution), **Fisher-Yates is better**.
+
+Why? Because sorting by float isn't really shuffling, it's *ranking*. You assign each item a number and arrange them in order. But that introduces subtle biases. Some permutations become more likely than others, especially if:
+
+* Your float values aren't perfectly distributed
+* The resolution of your floats is too low (collisions!)
+* Or the hash space itself has quirks
+
+Fisher-Yates doesn't have that problem.
+
+It builds the permutation step by step, choosing where each element goes with a uniform (in our case, deterministic) choice from the valid range. It doesn't just look random, it *is* random. Each of the `n!` permutations has an equal chance of appearing.
+
+In our version, we replace the "random" part with a float generated from a seed, so every shuffle is still perfectly repeatable, but without sacrificing fairness.
+
+> Soring by floats is easy.
+> Fisher-Yates is correct.
+
+It's chaos. But it's *your* chaos.

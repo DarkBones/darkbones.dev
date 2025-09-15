@@ -12,7 +12,7 @@ hideComments = true
 draft = true
 +++
 
-# Deterministic Randomness
+# I Banned Random Numbers from My Game. It Turned Out Beautiful.
 
 In most games, randomness just needs to *feel* right. Players don’t care if it’s truly random. They care about variety, surprise, and consistency. Turns out, you can fake all three without calling `random()` once.
 
@@ -94,6 +94,7 @@ if __name__ == "__main__":
 
 The Output:
 
+```
 | Username             | Deterministic Float |
 |----------------------|---------------------|
 | SirPoopsALot         | 0.233860            |
@@ -103,6 +104,7 @@ The Output:
 | egirl_karen          | 0.436530            |
 | npc_001              | 0.000916            |
 | definitely_not_a_bot | 0.887251            |
+```
 
 The **Plain English** of the code above: We want to take a string like `"SirPoopsALot"` and turn it into a number between 0 and 1. Always the same number, every time.
 
@@ -116,7 +118,7 @@ Let's step through the code and peek under the hood.
 
 This line takes the input string `"SirPoopsALot"` and turns it into a **32-bit integer** using a custom hash function. That `_fnv1a_32` function is a version of **FNV-1a**, a lightweight, fast, non-cryptographic hash algorithm (so, don't use it for your password vault).
 
-It's great for this usecase because:
+It's great for this use-case because:
 
 - It's **deterministic** - same input always gives the same output.
 - It's **chaotic** - tiny changes in input lead to massive changes in output.
@@ -195,6 +197,8 @@ Now that we have the power to take any string and convert it to the same float e
 The avatar of an NPC is just a colored circle with their initial in it. So I wrote a little more code:
 
 ```
+import colorsys
+
 SATURATION_MIN = 0.4
 SATURATION_MAX = 1.0
 VALUE_MIN = 0.4
@@ -229,6 +233,7 @@ def _proportional_clamp(value: float, min_val: float, max_val: float) -> float:
 
 The output becomes:
 
+```
 | Username             | Deterministic Float | Color (RGB Hex) |
 |----------------------|---------------------|-----------------|
 | SirPoopsALot         | 0.233860            | #BE2C0A         |
@@ -238,13 +243,14 @@ The output becomes:
 | egirl_karen          | 0.436530            | #B24439         |
 | npc_001              | 0.000916            | #4B0095         |
 | definitely_not_a_bot | 0.887251            | #11C070         |
+```
 
 I won't go over this line-by-line like the hashing algorithm. But here are some of the important things and techniques to note:
 
 * **We extract RGB values from the hash itself.**
 By slicing different parts of the 32-bit hash, we get deterministic red, green, and blue components. No RNG needed.
 
-* **We convert RGB to HSV to consrol how the color looks.**
+* **We convert RGB to HSV to control how the color looks.**
 HSV (Hue, Saturation, Value) is way easier to work with when you want consistent brightness and colorfulness. Raw RGB can sometimes give you washed-out or ultra-bright colors.
 
 * **We clamp the Saturation and Value to a pleasant range.**
@@ -285,7 +291,7 @@ In my game, players interact with a fake social media site. NPCs are constantly 
 
 > I don’t want them seeing the same post twice until they’ve cycled through *all* of them.
 
-That means I need to pick a random-looking post from the list, without repeats, all while keeping things deterministic. No savings which ones have been posted. No RNG. But still random-feeling.
+That means I need to pick a random-looking post from the list, without repeats, all while keeping things deterministic. No saving which ones have been posted. No RNG. But still random-feeling.
 
 Most devs would reach for `random.shuffle()`, but in my game, calls to `random` are **banned**. That means implementing a different kind of shuffle. One that's chaotic, but reproducible.
 
@@ -357,7 +363,7 @@ This generates a unique string seed for this step in the shuffle. A few design n
 
 * `perm_seed` is the player's username (or any unique identifier).
 * `i * 16777619` ensures the seed is different per step, and the prime multiplier helps scramble the bits.
-* The rest if just noisy padding to increase entropy.
+* The rest is just noisy padding to increase entropy.
 
 ```
     j_float = string_to_float(step_seed, 0.0, float(i + 1))
@@ -423,7 +429,13 @@ It builds the permutation step by step, choosing where each element goes with a 
 
 In our version, we replace the "random" part with a float generated from a seed, so every shuffle is still perfectly repeatable, but without sacrificing fairness.
 
-> Soring by floats is easy.
+> Sorting by floats is easy.
 > Fisher-Yates is correct.
 
 It's chaos. But it's *your* chaos.
+
+## TL;DR
+
+You don’t need randomness to create surprising, delightful, or chaotic-feeling outcomes. Deterministic systems can be beautiful, expressive, and easier to manage. If it feels random to the player, it *is*.
+
+Ultimately, banning `random()` forced me to think differently about generating variety and surprise. This deterministic approach, using hashing and a seeded shuffle, gives me exactly the kind of controlled chaos I need – predictable for debugging, unique for players, and requiring zero saved state for things like post timelines or NPC traits. It's a reminder that sometimes, the most powerful solutions are the ones you build yourself when the standard library doesn't quite fit the rules you've set.
